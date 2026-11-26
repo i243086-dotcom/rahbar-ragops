@@ -13,7 +13,7 @@ Humans capture these from the local minikube cluster. Each script must print its
 | D2 | Trace tool rebuilds prompt/context | `docs/screenshots/D2_trace_rebuild.png` | 3 | Pending |
 | E1 | Coverage before | `docs/screenshots/E1_coverage_before.png` | 7 | Pending |
 | E2 | Coverage after | `docs/screenshots/E2_coverage_after.png` | 7 | Pending |
-| F1 | All resources, PVCs, ConfigMaps, CronJobs and Jobs | `docs/screenshots/F1_cluster_resources.png` | 6 | Pending |
+| F1 | All resources plus archive-PVC survival across pod deletion | `docs/screenshots/F1_cluster_resources.png` | 1 | Script ready; human capture pending |
 | F2 | Completed ingestion Job logs | `docs/screenshots/F2_ingestion_job.png` | 5 | Pending |
 | F3 | Completed evaluation Job logs | `docs/screenshots/F3_evaluation_job.png` | 5 | Pending |
 | F4 | Gate result before/after ConfigMap edit | `docs/screenshots/F4_configmap_gate_flip.png` | 5 | Pending |
