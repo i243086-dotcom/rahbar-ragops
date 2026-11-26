@@ -47,6 +47,88 @@ kubectl config current-context
 kubectl -n rahbar get all,pvc,configmap,cronjob,job
 ```
 
+The screenshot scripts intentionally use standard `grep` and auto-detect `python3`, so Shaheer
+does **not** need ripgrep (`rg`) or a `python` alias. If Python is absent:
+
+```bash
+sudo apt update
+sudo apt install -y python3 python3-venv
+```
+
+## 1.1 Completed work handoff — read this before Phase 4
+
+The prior work is real and must be preserved. It is not a separate Assignment 3 interface; the
+existing RAHBAR chat UI remains the user-facing interface, while Assignment 3 adds Kubernetes
+Jobs, persistent data lifecycle, traces, evaluation, gates, and screenshots.
+
+### Phase 0 — A02 audit and real baseline
+
+- A public repository was created at `i243086-dotcom/rahbar-ragops` while retaining complete A02
+  history. `main` has PR/review protection; branches must be merged through review only.
+- The real corpus has 9 documents. A real minikube/Ollama indexer run produced 665 vectors of
+  dimension 768, processed 41 OCR pages, and took 677.1 seconds.
+- A real query returned the 2.00 CGPA warning rule with the 2026 handbook page-24 citation; an
+  out-of-scope hostel question abstained.
+- Primary evidence: `eval/results/phase0_baseline.json`, `docs/A02-AUDIT.md`,
+  `scripts/phase0_capture.py`.
+
+### Phase 1 — persistent platform baseline
+
+- API is a Kubernetes Deployment; Chroma is a StatefulSet with persistent storage. Nine PVCs are
+  bound: corpus, Chroma, Redis, Batch A, Batch B, quarantine, archive, evaluation results, and
+  traces.
+- The indexer Job/CronJob is the intended vector-store writer. API pods write JSON traces to stdout
+  and `/traces/<pod>.jsonl`; collection/model/version identity is literal pod-template environment
+  data for later rollback proof.
+- A real marker survived deletion of its writer pod and was read from a replacement pod.
+- Primary evidence: `eval/results/phase1_platform.json`, `k8s/base/ragops-storage.yaml`,
+  `k8s/README.md`, `scripts/phase1_capture.py`, `scripts/shots/F1.sh`.
+
+### Phase 2 — verification and incremental lifecycle
+
+- The verification stage runs after extraction and before chunking. It checks quality,
+  completeness, recency, and uniqueness; it writes a report per run and routes failures to
+  quarantine or older versions to archive.
+- Batch B has 11 deterministic fixtures: two exact duplicates, one near duplicate, a truncated
+  file, missing metadata, newer/older academic-rules versions, an injected instruction, and noise.
+- On real minikube runs: unchanged re-ingestion embedded 0 chunks; a changed library document
+  embedded/replaced 1 chunk; deleting the gardening fixture removed 1 chunk and left no orphan.
+- Primary evidence: `eval/results/phase2_data_lifecycle.json`, `indexer/pipeline/verify.py`,
+  `indexer/pipeline/incremental.py`, `corpus/batch_b/`, `k8s/jobs/ingest-batch-b.yaml`,
+  `scripts/phase2_capture.py`.
+
+### Phase 3 — traceability and guardrails
+
+- Each trace now records query, model/retrieval identity, filters, chunk/document/version/scores,
+  rank order, context, full prompt and SHA-256, response/citations, guardrail actions, cache, and
+  stage timings.
+- The replay tool proves prompt hashes match. A Batch B injected document was retrieved, its
+  instruction-like sentence was replaced in the stored prompt, and the trace recorded
+  `retrieved_instruction_removed:1`.
+- The committed mechanics sample uses the stub generator because Windows Ollama generation stalled
+  during that capture. This limitation is explicitly labelled and must never be described as a
+  real-model quality result.
+- Primary evidence: `eval/results/phase3_trace_observability.json`, `traces/phase3_samples.jsonl`,
+  `api/app/trace.py`, `scripts/replay_trace.py`, `scripts/summarize_traces.py`,
+  `scripts/phase3_capture.py`.
+
+### Repository tools and evidence map
+
+| Location | What it is for |
+| --- | --- |
+| `scripts/` | Operational commands, evidence capture, trace replay/summary, Batch B lifecycle helpers |
+| `scripts/shots/` | Human screenshot commands; run these unchanged and capture full terminal output |
+| `k8s/` | All Kubernetes manifests, runbook, standalone Jobs, and overlays |
+| `indexer/pipeline/` | Extraction, verification, chunking, embeddings, incremental manifest and vector updates |
+| `api/app/` | API, retrieval, guardrails, trace record/sink, metrics and providers |
+| `eval/results/` | Committed machine-produced measurements; report numbers must come from here |
+| `traces/` | Committed trace samples used for replay/metrics evidence |
+| `docs/screenshots/` | Human-captured PNG evidence only |
+| `.tools/kubeconform` | Local Kubernetes schema validator; run `.tools/kubeconform -strict -summary <manifest>` |
+| `docs/A03-PROGRESS.md` | Current phase status, measurement ledger, limitations, and open items |
+
+Use this map instead of duplicating logic or inventing a parallel implementation.
+
 If your cluster does not exist, follow [`k8s/README.md`](../k8s/README.md). You need Docker,
 minikube, kubectl, Ollama with `nomic-embed-text` and `llama3.2:3b`, and a host address reachable
 from minikube. All demonstrations must run on Kubernetes, not Docker Compose.
