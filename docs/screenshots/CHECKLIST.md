@@ -9,8 +9,8 @@ Humans capture these from the local minikube cluster. Each script must print its
 | B1 | Three-level evaluation summary | `docs/screenshots/B1_evaluation_summary.png` | 4 | Pending |
 | C1 | Gate failing | `docs/screenshots/C1_gate_fail.png` | 5 | Pending |
 | C2 | Gate passing | `docs/screenshots/C2_gate_pass.png` | 5 | Pending |
-| D1 | One complete trace record | `docs/screenshots/D1_full_trace.png` | 3 | Pending |
-| D2 | Trace tool rebuilds prompt/context | `docs/screenshots/D2_trace_rebuild.png` | 3 | Pending |
+| D1 | One complete trace record | `docs/screenshots/D1_full_trace.png` | 3 | Script ready; human capture pending (`scripts/shots/D1.sh 24e0339e33ea425d975aa51e37bab629`) |
+| D2 | Trace tool rebuilds prompt/context | `docs/screenshots/D2_trace_rebuild.png` | 3 | Script ready; human capture pending (`scripts/shots/D2.sh 24e0339e33ea425d975aa51e37bab629`) |
 | E1 | Coverage before | `docs/screenshots/E1_coverage_before.png` | 7 | Pending |
 | E2 | Coverage after | `docs/screenshots/E2_coverage_after.png` | 7 | Pending |
 | F1 | All resources plus archive-PVC survival across pod deletion | `docs/screenshots/F1_cluster_resources.png` | 1 | Script ready; human capture pending |

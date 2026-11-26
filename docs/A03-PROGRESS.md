@@ -11,7 +11,7 @@ The working submission deadline is **2026-11-28 23:59 Asia/Karachi**, based on t
 | 0 Bootstrap and A02 audit | Complete; PR pending | Audit/tests/report/cluster and real Ollama smoke test complete; public repository configured |
 | 1 Platform baseline | Complete; PR pending | Deployment/StatefulSet/Services, nine bound PVCs, CronJob, trace sink, and pod-replacement persistence proof |
 | 2 Verification and incremental update | Complete; PR pending | Real Batch B verification, unchanged/changed/deleted lifecycle jobs, archive/restore helper |
-| 3 Trace and guardrail | Not started | — |
+| 3 Trace and guardrail | Complete; PR pending | Full JSONL records, replay tool, summary metrics, injected-document trace |
 | 4 Three-level offline testing | Not started | Human sign-offs required |
 | 5 Change experiment and gate | Not started | — |
 | 6 Controlled release and resources | Not started | — |
@@ -55,6 +55,24 @@ Only real pipeline measurements go here. Phase 0 establishes deployment and inge
 | Unchanged re-ingestion | 0 embedded chunks | `eval/results/phase2_data_lifecycle.json` | Same accepted corpus |
 | Changed document | 1 embedded / 1 replaced | `eval/results/phase2_data_lifecycle.json` | `10-library-hours.md` only |
 | Deleted document | 0 embedded / 1 deleted | `eval/results/phase2_data_lifecycle.json` | No gardening-vector orphan |
+| Trace samples | 3 | `eval/results/phase3_trace_observability.json` | Kubernetes trace/replay verification |
+| Prompt replay | 3/3 hashes match | `eval/results/phase3_trace_observability.json` | Stored prompt equals reconstructed hash |
+| Injection actions flagged | 2 | `eval/results/phase3_trace_observability.json` | Query-shaped and retrieved Batch B instruction |
+
+## Phase 3 observability decisions
+
+- Each completed query trace records the original query, retrieval identity, filters, retrieved
+  chunk/document/version/score references, rank order, full prompt plus SHA-256, context, model
+  parameters, answer/citations, guardrail actions, stage latency, and cache outcome.
+- `scripts/replay_trace.py <trace-id>` reads the persistent trace volume and verifies the stored
+  prompt hash. `scripts/summarize_traces.py --input <jsonl>` emits top-1 similarity, abstention,
+  cache, injection, and p95 stage-latency metrics.
+- The committed Phase 3 samples were captured through the Kubernetes API with the deterministic
+  stub generator because Windows Ollama generation stalled while embeddings stayed reachable. The
+  result explicitly labels this run context; it is not used as a real-model quality claim.
+- A Batch B collection trace retrieved `08-injected-instruction.md`; its stored prompt replaces
+  the instruction with `[instruction-like text removed]` and records
+  `retrieved_instruction_removed:1`. The stub response also masks this text.
 
 ## Phase 2 data-management decisions
 
