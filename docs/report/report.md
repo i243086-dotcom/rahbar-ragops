@@ -48,7 +48,12 @@ Change experiment, gate, release decision, rollout/rollback, and resources: pend
 
 ## Page 7 — Parts D and E
 
-Trace metrics, guardrail evidence, root cause, data drift, and coverage: pending Phases 3, 7, and 8 result JSON.
+Trace records now include the query, retrieval identity and scores, rank order, exact context,
+full prompt/hash, model settings, citations, guardrail actions, cache outcome, and per-stage
+latency. Three Kubernetes samples replayed with matching hashes. An injected Batch B document was
+retrieved; its instruction-like sentence was removed from the stored prompt and logged. These are
+mechanics measurements only: the committed run uses the stub generator because live Ollama
+generation was stalled. Coverage/drift and real-model trace metrics remain pending later phases.
 
 ## Page 8 — Short answers and contributions
 

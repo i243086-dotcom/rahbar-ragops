@@ -31,6 +31,8 @@ class TraceRecord:
     filters: dict[str, Any] = field(default_factory=dict)
     reranked_order: list[str] = field(default_factory=list)
     prompt_hash: str | None = None
+    prompt: list[dict[str, str]] = field(default_factory=list)
+    context: list[dict[str, Any]] = field(default_factory=list)
     model: str = ""
     model_parameters: dict[str, Any] = field(default_factory=dict)
     response: str = ""

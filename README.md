@@ -100,6 +100,18 @@ scripts/shots/A2.sh <completed-unchanged-job>
 changed, and deleted) plus their persistent verification report and manifest. The checked-in
 `eval/results/phase2_data_lifecycle.json` is the run from this repository's minikube cluster.
 
+### Part D — traces and guardrails
+
+```bash
+python scripts/replay_trace.py <trace-id>
+python scripts/summarize_traces.py --input traces/phase3_samples.jsonl
+scripts/shots/D1.sh <trace-id>
+scripts/shots/D2.sh <trace-id>
+```
+
+Every API query is logged to stdout and `/traces/<pod>.jsonl`. The replay command performs no
+model call: it prints the recorded context and prompt and verifies the stored SHA-256 hash.
+
 ## CI and publishing
 
 CI runs on pushes to `dev` and PRs into `dev` or `main`. It checks lint, tests and coverage, validates the production overlay, builds and scans all three images, and evaluates the fixture corpus through a kind Ingress. The fixture job uses a deterministic embedding endpoint and the stub generator so it measures retrieval, citation validity and abstention without depending on model downloads. Production quality is measured separately with Ollama and the real corpus.
