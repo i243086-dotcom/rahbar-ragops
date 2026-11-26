@@ -31,6 +31,8 @@ The submission deadline is **pending owner confirmation**. A backward plan canno
 - The three A02 images built and loaded. The stub overlay deployed; its indexer Job completed with 3 chunks in 2.3 seconds and the API/UI rollouts completed.
 - A Kubernetes query produced a cited stub response. The out-of-scope hostel query also produced an answer because the stub retriever always returns fixed high-scoring passages; this is not accepted as the required abstention proof. Real-model proof remains pending.
 - Host Ollama is not listening on `localhost:11434`. The official installer was inspected, but local installation needs a sudo password; no unattended privilege bypass was attempted.
+- A safer Docker fallback bound only to minikube's host gateway was attempted. The main `ollama/ollama` image layer made no observable progress for several minutes and the pull was cancelled cleanly; no Ollama container was created.
+- The public A02 corpus was fetched locally (ignored `corpus/raw/`) and all 9 documents pass `corpus/fetch.py --verify` against the tracked manifest.
 - Python is 3.12.3. Poppler is installed. `kubectl kustomize` is available (v5.8.1); a separate Kustomize binary is unnecessary. Kubeconform v0.8.0 is installed under ignored `.tools/` and validated all 29 production resources with 0 invalid/errors/skips.
 - ReportLab 4.2.5 is pinned for the report. `docs/report/report_body.pdf` builds as exactly 8 A4 pages. The production Kustomize overlay renders successfully.
 - Baseline verification: 63 API tests passed, 30 indexer tests passed, Ruff passed, and mypy passed for 30 API plus 11 indexer source files. Tests require approved host execution because the managed sandbox blocks AnyIO's cross-thread event-loop wakeup.
