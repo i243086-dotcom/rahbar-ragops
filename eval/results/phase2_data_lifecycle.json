@@ -1,0 +1,917 @@
+{
+  "captured_at": "2026-11-26T16:56:49.223517+00:00",
+  "cluster": "minikube/rahbar",
+  "jobs": {
+    "first": {
+      "job": "ingest-batch-b-qbjr2",
+      "events": [
+        {
+          "ts": "2026-11-26T16:34:04Z",
+          "logger": "rahbar.indexer",
+          "msg": "indexer starting",
+          "dummy": false,
+          "embed_model": "nomic-embed-text",
+          "collection": "rahbar-batch-b",
+          "chroma": "chroma:8000",
+          "pod": "ingest-batch-b-qbjr2-mcrfp"
+        },
+        {
+          "ts": "2026-11-26T16:34:07Z",
+          "logger": "rahbar.indexer",
+          "msg": "verification complete",
+          "report": "/results/verification-20261126T163407Z.json",
+          "total": 10,
+          "passed": 5,
+          "failed": 5
+        },
+        {
+          "ts": "2026-11-26T16:34:07Z",
+          "logger": "rahbar.indexer",
+          "msg": "chunked",
+          "source": "01-services-policy.md",
+          "chunks": 1,
+          "doc_version": "2026",
+          "superseded": false
+        },
+        {
+          "ts": "2026-11-26T16:34:07Z",
+          "logger": "rahbar.indexer",
+          "msg": "chunked",
+          "source": "07-academic-rules-2027.md",
+          "chunks": 1,
+          "doc_version": "2027-01",
+          "superseded": false
+        },
+        {
+          "ts": "2026-11-26T16:34:07Z",
+          "logger": "rahbar.indexer",
+          "msg": "chunked",
+          "source": "08-injected-instruction.md",
+          "chunks": 1,
+          "doc_version": "2026",
+          "superseded": false
+        },
+        {
+          "ts": "2026-11-26T16:34:07Z",
+          "logger": "rahbar.indexer",
+          "msg": "chunked",
+          "source": "09-irrelevant-gardening.md",
+          "chunks": 1,
+          "doc_version": "2026",
+          "superseded": false
+        },
+        {
+          "ts": "2026-11-26T16:34:07Z",
+          "logger": "rahbar.indexer",
+          "msg": "chunked",
+          "source": "10-library-hours.md",
+          "chunks": 1,
+          "doc_version": "2026",
+          "superseded": false
+        },
+        {
+          "ts": "2026-11-26T16:34:07Z",
+          "logger": "rahbar.indexer",
+          "msg": "chunking summary",
+          "documents": 5,
+          "skipped": [],
+          "quarantined_or_archived": 5,
+          "ocr_pages": 0,
+          "chunks": 5,
+          "original_words": 158,
+          "stored_words": 153,
+          "storage_amplification": 0.968
+        },
+        {
+          "ts": "2026-11-26T16:34:12Z",
+          "logger": "rahbar.indexer",
+          "msg": "incremental update",
+          "changed_documents": [
+            "01-services-policy.md",
+            "07-academic-rules-2027.md",
+            "08-injected-instruction.md",
+            "09-irrelevant-gardening.md",
+            "10-library-hours.md"
+          ],
+          "unchanged_documents": [],
+          "deleted_documents": [],
+          "chunks_embedded": 5,
+          "chunks_deleted": 0,
+          "collection_count": 5,
+          "model": "nomic-embed-text"
+        },
+        {
+          "ts": "2026-11-26T16:34:12Z",
+          "logger": "rahbar.indexer",
+          "msg": "cache invalidated",
+          "keys_removed": 0
+        },
+        {
+          "ts": "2026-11-26T16:34:12Z",
+          "logger": "rahbar.indexer",
+          "msg": "indexer finished",
+          "chunks": 5,
+          "seconds": 7.8
+        }
+      ],
+      "incremental": {
+        "ts": "2026-11-26T16:34:12Z",
+        "logger": "rahbar.indexer",
+        "msg": "incremental update",
+        "changed_documents": [
+          "01-services-policy.md",
+          "07-academic-rules-2027.md",
+          "08-injected-instruction.md",
+          "09-irrelevant-gardening.md",
+          "10-library-hours.md"
+        ],
+        "unchanged_documents": [],
+        "deleted_documents": [],
+        "chunks_embedded": 5,
+        "chunks_deleted": 0,
+        "collection_count": 5,
+        "model": "nomic-embed-text"
+      }
+    },
+    "unchanged": {
+      "job": "ingest-batch-b-q4hhg",
+      "events": [
+        {
+          "ts": "2026-11-26T16:34:26Z",
+          "logger": "rahbar.indexer",
+          "msg": "indexer starting",
+          "dummy": false,
+          "embed_model": "nomic-embed-text",
+          "collection": "rahbar-batch-b",
+          "chroma": "chroma:8000",
+          "pod": "ingest-batch-b-q4hhg-xxzh9"
+        },
+        {
+          "ts": "2026-11-26T16:34:30Z",
+          "logger": "rahbar.indexer",
+          "msg": "verification complete",
+          "report": "/results/verification-20261126T163430Z.json",
+          "total": 10,
+          "passed": 5,
+          "failed": 5
+        },
+        {
+          "ts": "2026-11-26T16:34:30Z",
+          "logger": "rahbar.indexer",
+          "msg": "chunked",
+          "source": "01-services-policy.md",
+          "chunks": 1,
+          "doc_version": "2026",
+          "superseded": false
+        },
+        {
+          "ts": "2026-11-26T16:34:30Z",
+          "logger": "rahbar.indexer",
+          "msg": "chunked",
+          "source": "07-academic-rules-2027.md",
+          "chunks": 1,
+          "doc_version": "2027-01",
+          "superseded": false
+        },
+        {
+          "ts": "2026-11-26T16:34:30Z",
+          "logger": "rahbar.indexer",
+          "msg": "chunked",
+          "source": "08-injected-instruction.md",
+          "chunks": 1,
+          "doc_version": "2026",
+          "superseded": false
+        },
+        {
+          "ts": "2026-11-26T16:34:30Z",
+          "logger": "rahbar.indexer",
+          "msg": "chunked",
+          "source": "09-irrelevant-gardening.md",
+          "chunks": 1,
+          "doc_version": "2026",
+          "superseded": false
+        },
+        {
+          "ts": "2026-11-26T16:34:30Z",
+          "logger": "rahbar.indexer",
+          "msg": "chunked",
+          "source": "10-library-hours.md",
+          "chunks": 1,
+          "doc_version": "2026",
+          "superseded": false
+        },
+        {
+          "ts": "2026-11-26T16:34:30Z",
+          "logger": "rahbar.indexer",
+          "msg": "chunking summary",
+          "documents": 5,
+          "skipped": [],
+          "quarantined_or_archived": 5,
+          "ocr_pages": 0,
+          "chunks": 5,
+          "original_words": 158,
+          "stored_words": 153,
+          "storage_amplification": 0.968
+        },
+        {
+          "ts": "2026-11-26T16:34:33Z",
+          "logger": "rahbar.indexer",
+          "msg": "incremental update",
+          "changed_documents": [],
+          "unchanged_documents": [
+            "01-services-policy.md",
+            "07-academic-rules-2027.md",
+            "08-injected-instruction.md",
+            "09-irrelevant-gardening.md",
+            "10-library-hours.md"
+          ],
+          "deleted_documents": [],
+          "chunks_embedded": 0,
+          "chunks_deleted": 0,
+          "collection_count": 5,
+          "model": "nomic-embed-text"
+        },
+        {
+          "ts": "2026-11-26T16:34:33Z",
+          "logger": "rahbar.indexer",
+          "msg": "cache invalidated",
+          "keys_removed": 0
+        },
+        {
+          "ts": "2026-11-26T16:34:33Z",
+          "logger": "rahbar.indexer",
+          "msg": "indexer finished",
+          "chunks": 5,
+          "seconds": 7.5
+        }
+      ],
+      "incremental": {
+        "ts": "2026-11-26T16:34:33Z",
+        "logger": "rahbar.indexer",
+        "msg": "incremental update",
+        "changed_documents": [],
+        "unchanged_documents": [
+          "01-services-policy.md",
+          "07-academic-rules-2027.md",
+          "08-injected-instruction.md",
+          "09-irrelevant-gardening.md",
+          "10-library-hours.md"
+        ],
+        "deleted_documents": [],
+        "chunks_embedded": 0,
+        "chunks_deleted": 0,
+        "collection_count": 5,
+        "model": "nomic-embed-text"
+      }
+    },
+    "changed": {
+      "job": "ingest-batch-b-8cvv7",
+      "events": [
+        {
+          "ts": "2026-11-26T16:47:00Z",
+          "logger": "rahbar.indexer",
+          "msg": "indexer starting",
+          "dummy": false,
+          "embed_model": "nomic-embed-text",
+          "collection": "rahbar-batch-b",
+          "chroma": "chroma:8000",
+          "pod": "ingest-batch-b-8cvv7-rb7r4"
+        },
+        {
+          "ts": "2026-11-26T16:47:04Z",
+          "logger": "rahbar.indexer",
+          "msg": "verification complete",
+          "report": "/results/verification-20261126T164704Z.json",
+          "total": 11,
+          "passed": 5,
+          "failed": 6
+        },
+        {
+          "ts": "2026-11-26T16:47:04Z",
+          "logger": "rahbar.indexer",
+          "msg": "chunked",
+          "source": "01-services-policy.md",
+          "chunks": 1,
+          "doc_version": "2026",
+          "superseded": false
+        },
+        {
+          "ts": "2026-11-26T16:47:04Z",
+          "logger": "rahbar.indexer",
+          "msg": "chunked",
+          "source": "07-academic-rules-2027.md",
+          "chunks": 1,
+          "doc_version": "2027-01",
+          "superseded": false
+        },
+        {
+          "ts": "2026-11-26T16:47:04Z",
+          "logger": "rahbar.indexer",
+          "msg": "chunked",
+          "source": "08-injected-instruction.md",
+          "chunks": 1,
+          "doc_version": "2026",
+          "superseded": false
+        },
+        {
+          "ts": "2026-11-26T16:47:04Z",
+          "logger": "rahbar.indexer",
+          "msg": "chunked",
+          "source": "09-irrelevant-gardening.md",
+          "chunks": 1,
+          "doc_version": "2026",
+          "superseded": false
+        },
+        {
+          "ts": "2026-11-26T16:47:04Z",
+          "logger": "rahbar.indexer",
+          "msg": "chunked",
+          "source": "10-library-hours.md",
+          "chunks": 1,
+          "doc_version": "2026",
+          "superseded": false
+        },
+        {
+          "ts": "2026-11-26T16:47:04Z",
+          "logger": "rahbar.indexer",
+          "msg": "chunking summary",
+          "documents": 5,
+          "skipped": [],
+          "quarantined_or_archived": 6,
+          "ocr_pages": 0,
+          "chunks": 5,
+          "original_words": 174,
+          "stored_words": 169,
+          "storage_amplification": 0.971
+        },
+        {
+          "ts": "2026-11-26T16:47:11Z",
+          "logger": "rahbar.indexer",
+          "msg": "incremental update",
+          "changed_documents": [
+            "10-library-hours.md"
+          ],
+          "unchanged_documents": [
+            "01-services-policy.md",
+            "07-academic-rules-2027.md",
+            "08-injected-instruction.md",
+            "09-irrelevant-gardening.md"
+          ],
+          "deleted_documents": [],
+          "chunks_embedded": 1,
+          "chunks_deleted": 1,
+          "collection_count": 5,
+          "model": "nomic-embed-text"
+        },
+        {
+          "ts": "2026-11-26T16:47:16Z",
+          "logger": "rahbar.indexer",
+          "level": "WARNING",
+          "msg": "cache invalidation failed; API ignores stale entries by index_id",
+          "error": "TimeoutError('Timeout reading from socket')"
+        },
+        {
+          "ts": "2026-11-26T16:47:16Z",
+          "logger": "rahbar.indexer",
+          "msg": "cache invalidated",
+          "keys_removed": null
+        },
+        {
+          "ts": "2026-11-26T16:47:16Z",
+          "logger": "rahbar.indexer",
+          "msg": "indexer finished",
+          "chunks": 5,
+          "seconds": 16.7
+        }
+      ],
+      "incremental": {
+        "ts": "2026-11-26T16:47:11Z",
+        "logger": "rahbar.indexer",
+        "msg": "incremental update",
+        "changed_documents": [
+          "10-library-hours.md"
+        ],
+        "unchanged_documents": [
+          "01-services-policy.md",
+          "07-academic-rules-2027.md",
+          "08-injected-instruction.md",
+          "09-irrelevant-gardening.md"
+        ],
+        "deleted_documents": [],
+        "chunks_embedded": 1,
+        "chunks_deleted": 1,
+        "collection_count": 5,
+        "model": "nomic-embed-text"
+      }
+    },
+    "deleted": {
+      "job": "ingest-batch-b-pkqmk",
+      "events": [
+        {
+          "ts": "2026-11-26T16:48:21Z",
+          "logger": "rahbar.indexer",
+          "msg": "indexer starting",
+          "dummy": false,
+          "embed_model": "nomic-embed-text",
+          "collection": "rahbar-batch-b",
+          "chroma": "chroma:8000",
+          "pod": "ingest-batch-b-pkqmk-nkd96"
+        },
+        {
+          "ts": "2026-11-26T16:48:22Z",
+          "logger": "rahbar.indexer",
+          "msg": "document skipped",
+          "source": "09-irrelevant-gardening.md",
+          "error": "FileNotFoundError(2, 'No such file or directory')"
+        },
+        {
+          "ts": "2026-11-26T16:48:24Z",
+          "logger": "rahbar.indexer",
+          "msg": "verification complete",
+          "report": "/results/verification-20261126T164824Z.json",
+          "total": 10,
+          "passed": 4,
+          "failed": 6
+        },
+        {
+          "ts": "2026-11-26T16:48:24Z",
+          "logger": "rahbar.indexer",
+          "msg": "chunked",
+          "source": "01-services-policy.md",
+          "chunks": 1,
+          "doc_version": "2026",
+          "superseded": false
+        },
+        {
+          "ts": "2026-11-26T16:48:24Z",
+          "logger": "rahbar.indexer",
+          "msg": "chunked",
+          "source": "07-academic-rules-2027.md",
+          "chunks": 1,
+          "doc_version": "2027-01",
+          "superseded": false
+        },
+        {
+          "ts": "2026-11-26T16:48:24Z",
+          "logger": "rahbar.indexer",
+          "msg": "chunked",
+          "source": "08-injected-instruction.md",
+          "chunks": 1,
+          "doc_version": "2026",
+          "superseded": false
+        },
+        {
+          "ts": "2026-11-26T16:48:24Z",
+          "logger": "rahbar.indexer",
+          "msg": "chunked",
+          "source": "10-library-hours.md",
+          "chunks": 1,
+          "doc_version": "2026",
+          "superseded": false
+        },
+        {
+          "ts": "2026-11-26T16:48:24Z",
+          "logger": "rahbar.indexer",
+          "msg": "chunking summary",
+          "documents": 4,
+          "skipped": [
+            "09-irrelevant-gardening.md"
+          ],
+          "quarantined_or_archived": 6,
+          "ocr_pages": 0,
+          "chunks": 4,
+          "original_words": 149,
+          "stored_words": 145,
+          "storage_amplification": 0.973
+        },
+        {
+          "ts": "2026-11-26T16:48:27Z",
+          "logger": "rahbar.indexer",
+          "msg": "incremental update",
+          "changed_documents": [],
+          "unchanged_documents": [
+            "01-services-policy.md",
+            "07-academic-rules-2027.md",
+            "08-injected-instruction.md",
+            "10-library-hours.md"
+          ],
+          "deleted_documents": [
+            "09-irrelevant-gardening.md"
+          ],
+          "chunks_embedded": 0,
+          "chunks_deleted": 1,
+          "collection_count": 4,
+          "model": "nomic-embed-text"
+        },
+        {
+          "ts": "2026-11-26T16:48:33Z",
+          "logger": "rahbar.indexer",
+          "level": "WARNING",
+          "msg": "cache invalidation failed; API ignores stale entries by index_id",
+          "error": "TimeoutError('Timeout reading from socket')"
+        },
+        {
+          "ts": "2026-11-26T16:48:33Z",
+          "logger": "rahbar.indexer",
+          "msg": "cache invalidated",
+          "keys_removed": null
+        },
+        {
+          "ts": "2026-11-26T16:48:33Z",
+          "logger": "rahbar.indexer",
+          "msg": "indexer finished",
+          "chunks": 4,
+          "seconds": 11.9
+        }
+      ],
+      "incremental": {
+        "ts": "2026-11-26T16:48:27Z",
+        "logger": "rahbar.indexer",
+        "msg": "incremental update",
+        "changed_documents": [],
+        "unchanged_documents": [
+          "01-services-policy.md",
+          "07-academic-rules-2027.md",
+          "08-injected-instruction.md",
+          "10-library-hours.md"
+        ],
+        "deleted_documents": [
+          "09-irrelevant-gardening.md"
+        ],
+        "chunks_embedded": 0,
+        "chunks_deleted": 1,
+        "collection_count": 4,
+        "model": "nomic-embed-text"
+      }
+    }
+  },
+  "verification_report": {
+    "run_id": "20261126T164824Z",
+    "documents": [
+      {
+        "source": "01-services-policy.md",
+        "document_id": "services-policy",
+        "content_hash": "2a80ac56ba627afa0c297e954442bed26f5d2d18269cb0f3a8b8b0829c4a40dd",
+        "checks": {
+          "quality": {
+            "passed": true,
+            "reasons": [
+              "usable_extraction"
+            ]
+          },
+          "completeness": {
+            "passed": true,
+            "reasons": [
+              "required_metadata_and_page_count_present"
+            ]
+          },
+          "recency": {
+            "passed": true,
+            "reasons": [
+              "latest_version"
+            ]
+          },
+          "uniqueness": {
+            "passed": true,
+            "reasons": [
+              "unique"
+            ]
+          }
+        },
+        "passed": true
+      },
+      {
+        "source": "02-services-exact-copy-a.md",
+        "document_id": "services-copy-a",
+        "content_hash": "2a80ac56ba627afa0c297e954442bed26f5d2d18269cb0f3a8b8b0829c4a40dd",
+        "checks": {
+          "quality": {
+            "passed": true,
+            "reasons": [
+              "usable_extraction"
+            ]
+          },
+          "completeness": {
+            "passed": true,
+            "reasons": [
+              "required_metadata_and_page_count_present"
+            ]
+          },
+          "recency": {
+            "passed": true,
+            "reasons": [
+              "latest_version"
+            ]
+          },
+          "uniqueness": {
+            "passed": false,
+            "reasons": [
+              "exact_duplicate_of:01-services-policy.md"
+            ]
+          }
+        },
+        "passed": false
+      },
+      {
+        "source": "03-services-exact-copy-b.md",
+        "document_id": "services-copy-b",
+        "content_hash": "2a80ac56ba627afa0c297e954442bed26f5d2d18269cb0f3a8b8b0829c4a40dd",
+        "checks": {
+          "quality": {
+            "passed": true,
+            "reasons": [
+              "usable_extraction"
+            ]
+          },
+          "completeness": {
+            "passed": true,
+            "reasons": [
+              "required_metadata_and_page_count_present"
+            ]
+          },
+          "recency": {
+            "passed": true,
+            "reasons": [
+              "latest_version"
+            ]
+          },
+          "uniqueness": {
+            "passed": false,
+            "reasons": [
+              "exact_duplicate_of:01-services-policy.md"
+            ]
+          }
+        },
+        "passed": false
+      },
+      {
+        "source": "04-services-near-copy.md",
+        "document_id": "services-near",
+        "content_hash": "13824bd8878b3e680e84dc2d8f6847157f9e3bbea5c5c439a9e13afc28c41fd0",
+        "checks": {
+          "quality": {
+            "passed": true,
+            "reasons": [
+              "usable_extraction"
+            ]
+          },
+          "completeness": {
+            "passed": true,
+            "reasons": [
+              "required_metadata_and_page_count_present"
+            ]
+          },
+          "recency": {
+            "passed": true,
+            "reasons": [
+              "latest_version"
+            ]
+          },
+          "uniqueness": {
+            "passed": false,
+            "reasons": [
+              "near_duplicate_of:01-services-policy.md"
+            ]
+          }
+        },
+        "passed": false
+      },
+      {
+        "source": "05-truncated.txt",
+        "document_id": "truncated-policy",
+        "content_hash": "f526795c95399cea27c055c842c3d6ab018ed0fa4f66f701c28ab22dec28237b",
+        "checks": {
+          "quality": {
+            "passed": false,
+            "reasons": [
+              "empty_or_too_short"
+            ]
+          },
+          "completeness": {
+            "passed": false,
+            "reasons": [
+              "metadata_marks_truncated"
+            ]
+          },
+          "recency": {
+            "passed": true,
+            "reasons": [
+              "latest_version"
+            ]
+          },
+          "uniqueness": {
+            "passed": true,
+            "reasons": [
+              "unique"
+            ]
+          }
+        },
+        "passed": false
+      },
+      {
+        "source": "06-missing-metadata.md",
+        "document_id": "missing-metadata",
+        "content_hash": "8e1ad5a7063eb3414bd72a99603a0a62a12dc31f23dc3a885cf13c2df125dc26",
+        "checks": {
+          "quality": {
+            "passed": true,
+            "reasons": [
+              "usable_extraction"
+            ]
+          },
+          "completeness": {
+            "passed": false,
+            "reasons": [
+              "missing_title"
+            ]
+          },
+          "recency": {
+            "passed": true,
+            "reasons": [
+              "latest_version"
+            ]
+          },
+          "uniqueness": {
+            "passed": true,
+            "reasons": [
+              "unique"
+            ]
+          }
+        },
+        "passed": false
+      },
+      {
+        "source": "07-academic-rules-2027.md",
+        "document_id": "undergraduate-academic-rules",
+        "content_hash": "44b4c6b49b44482881fa623396b2386f30de28e198ff1c755e0093d21f37edb3",
+        "checks": {
+          "quality": {
+            "passed": true,
+            "reasons": [
+              "usable_extraction"
+            ]
+          },
+          "completeness": {
+            "passed": true,
+            "reasons": [
+              "required_metadata_and_page_count_present"
+            ]
+          },
+          "recency": {
+            "passed": true,
+            "reasons": [
+              "latest_version"
+            ]
+          },
+          "uniqueness": {
+            "passed": true,
+            "reasons": [
+              "unique"
+            ]
+          }
+        },
+        "passed": true
+      },
+      {
+        "source": "08-injected-instruction.md",
+        "document_id": "injection-test",
+        "content_hash": "23b4aa9bdbb6df7e9f643ed5651307ca70523f827cee5f1057a97e0c088429cf",
+        "checks": {
+          "quality": {
+            "passed": true,
+            "reasons": [
+              "usable_extraction"
+            ]
+          },
+          "completeness": {
+            "passed": true,
+            "reasons": [
+              "required_metadata_and_page_count_present"
+            ]
+          },
+          "recency": {
+            "passed": true,
+            "reasons": [
+              "latest_version"
+            ]
+          },
+          "uniqueness": {
+            "passed": true,
+            "reasons": [
+              "unique"
+            ]
+          }
+        },
+        "passed": true
+      },
+      {
+        "source": "10-library-hours.md",
+        "document_id": "library-hours",
+        "content_hash": "925bbfc8114d688d2cb56103fd7ab7c35e6ebb08fe3d699ae635edb2a331b2f3",
+        "checks": {
+          "quality": {
+            "passed": true,
+            "reasons": [
+              "usable_extraction"
+            ]
+          },
+          "completeness": {
+            "passed": true,
+            "reasons": [
+              "required_metadata_and_page_count_present"
+            ]
+          },
+          "recency": {
+            "passed": true,
+            "reasons": [
+              "latest_version"
+            ]
+          },
+          "uniqueness": {
+            "passed": true,
+            "reasons": [
+              "unique"
+            ]
+          }
+        },
+        "passed": true
+      },
+      {
+        "source": "11-academic-rules-2026.md",
+        "document_id": "undergraduate-academic-rules",
+        "content_hash": "73790273aba11a2d19caa6365d04d005f62b54a0b026c6642e0d409edd90b2f3",
+        "checks": {
+          "quality": {
+            "passed": true,
+            "reasons": [
+              "usable_extraction"
+            ]
+          },
+          "completeness": {
+            "passed": true,
+            "reasons": [
+              "required_metadata_and_page_count_present"
+            ]
+          },
+          "recency": {
+            "passed": false,
+            "reasons": [
+              "newer_version_detected:2027-01"
+            ]
+          },
+          "uniqueness": {
+            "passed": true,
+            "reasons": [
+              "unique"
+            ]
+          }
+        },
+        "passed": false
+      }
+    ],
+    "summary": {
+      "total": 10,
+      "passed": 4,
+      "failed": 6
+    }
+  },
+  "final_manifest": {
+    "collection": "rahbar-batch-b",
+    "embed_model": "nomic-embed-text",
+    "dimension": 768,
+    "documents": {
+      "01-services-policy.md": {
+        "content_hash": "2a80ac56ba627afa0c297e954442bed26f5d2d18269cb0f3a8b8b0829c4a40dd",
+        "chunk_ids": [
+          "01-services-policy-0000"
+        ],
+        "chunk_count": 1
+      },
+      "07-academic-rules-2027.md": {
+        "content_hash": "44b4c6b49b44482881fa623396b2386f30de28e198ff1c755e0093d21f37edb3",
+        "chunk_ids": [
+          "07-academic-rules-2027-0000"
+        ],
+        "chunk_count": 1
+      },
+      "08-injected-instruction.md": {
+        "content_hash": "23b4aa9bdbb6df7e9f643ed5651307ca70523f827cee5f1057a97e0c088429cf",
+        "chunk_ids": [
+          "08-injected-instruction-0000"
+        ],
+        "chunk_count": 1
+      },
+      "10-library-hours.md": {
+        "content_hash": "925bbfc8114d688d2cb56103fd7ab7c35e6ebb08fe3d699ae635edb2a331b2f3",
+        "chunk_ids": [
+          "10-library-hours-0000"
+        ],
+        "chunk_count": 1
+      }
+    }
+  },
+  "archive_proof": {
+    "file": "11-academic-rules-2026.md",
+    "sha256": "5f5e7b9c03df98a09f476344c3fde681e44fe3bdb1d550eda84dda743db34d71  /archive/batch-b/11-academic-rules-2026.md"
+  }
+}

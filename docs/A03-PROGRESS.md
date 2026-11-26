@@ -10,7 +10,7 @@ The working submission deadline is **2026-11-28 23:59 Asia/Karachi**, based on t
 | --- | --- | --- |
 | 0 Bootstrap and A02 audit | Complete; PR pending | Audit/tests/report/cluster and real Ollama smoke test complete; public repository configured |
 | 1 Platform baseline | Complete; PR pending | Deployment/StatefulSet/Services, nine bound PVCs, CronJob, trace sink, and pod-replacement persistence proof |
-| 2 Verification and incremental update | Not started | — |
+| 2 Verification and incremental update | Complete; PR pending | Real Batch B verification, unchanged/changed/deleted lifecycle jobs, archive/restore helper |
 | 3 Trace and guardrail | Not started | — |
 | 4 Three-level offline testing | Not started | Human sign-offs required |
 | 5 Change experiment and gate | Not started | — |
@@ -51,6 +51,28 @@ Only real pipeline measurements go here. Phase 0 establishes deployment and inge
 | API ready replicas | 3 | `eval/results/phase1_platform.json` | Phase 1 minikube deployment |
 | Chroma ready replicas | 1 | `eval/results/phase1_platform.json` | StatefulSet with persistent claim |
 | Bound persistent claims | 9 | `eval/results/phase1_platform.json` | Includes data lake, quarantine, archive, results, traces |
+| Batch B verification | 4 pass / 6 fail | `eval/results/phase2_data_lifecycle.json` | 10 remaining documents after deletion proof |
+| Unchanged re-ingestion | 0 embedded chunks | `eval/results/phase2_data_lifecycle.json` | Same accepted corpus |
+| Changed document | 1 embedded / 1 replaced | `eval/results/phase2_data_lifecycle.json` | `10-library-hours.md` only |
+| Deleted document | 0 embedded / 1 deleted | `eval/results/phase2_data_lifecycle.json` | No gardening-vector orphan |
+
+## Phase 2 data-management decisions
+
+- Verification happens after extraction and before chunking. It produces one JSON report per run,
+  with quality, completeness, recency, and uniqueness checks and explicit reasons.
+- Batch B contains 11 tracked fixtures (at least ten): two exact copies, one near copy, a truncated
+  text file, missing metadata, a newer academic-rules version, an injected instruction, irrelevant
+  retrieval noise, and an older archive/restore fixture.
+- The real Batch B Job accepted five documents on its initial successful run and rejected six;
+  duplicate, near-duplicate, truncated, missing-title, and older-version reasons are committed in
+  `eval/results/phase2_data_lifecycle.json`. Failed items are copied to quarantine; the older
+  version is copied to archive.
+- A persistent `index-manifest.json` maps document hashes to chunk IDs. The second unchanged Job
+  embedded zero chunks. A one-document update embedded/replaced one chunk; deleting the gardening
+  fixture removed its sole stored chunk, reducing the collection from five to four.
+- `scripts/restore_batch_b_archive.sh 11-academic-rules-2026.md` restores the archived, tracked
+  lifecycle fixture to Batch B for the rollback demonstration. It is deliberately limited to that
+  fixture and prints its SHA-256 proof.
 
 ## Phase 1 platform decisions
 

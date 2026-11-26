@@ -4,8 +4,8 @@ Humans capture these from the local minikube cluster. Each script must print its
 
 | ID | Required evidence | Target file | Phase | Status |
 | --- | --- | --- | ---: | --- |
-| A1 | Batch B verification, each check with reasons | `docs/screenshots/A1_verification_batch_b.png` | 2 | Pending |
-| A2 | Unchanged second ingestion: zero embedded, deletion/orphan counts visible | `docs/screenshots/A2_unchanged_zero_embeddings.png` | 2 | Pending |
+| A1 | Batch B verification, each check with reasons | `docs/screenshots/A1_verification_batch_b.png` | 2 | Script ready; human capture pending (`scripts/shots/A1.sh ingest-batch-b-j7n7x`) |
+| A2 | Unchanged second ingestion: zero embedded, deletion/orphan counts visible | `docs/screenshots/A2_unchanged_zero_embeddings.png` | 2 | Script ready; human capture pending (`scripts/shots/A2.sh ingest-batch-b-q4hhg`) |
 | B1 | Three-level evaluation summary | `docs/screenshots/B1_evaluation_summary.png` | 4 | Pending |
 | C1 | Gate failing | `docs/screenshots/C1_gate_fail.png` | 5 | Pending |
 | C2 | Gate passing | `docs/screenshots/C2_gate_pass.png` | 5 | Pending |
