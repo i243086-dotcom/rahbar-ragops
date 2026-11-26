@@ -9,7 +9,7 @@ The working submission deadline is **2026-11-28 23:59 Asia/Karachi**, based on t
 | Phase | Status | Evidence / decision |
 | --- | --- | --- |
 | 0 Bootstrap and A02 audit | Complete; PR pending | Audit/tests/report/cluster and real Ollama smoke test complete; public repository configured |
-| 1 Platform baseline | Not started | — |
+| 1 Platform baseline | Complete; PR pending | Deployment/StatefulSet/Services, nine bound PVCs, CronJob, trace sink, and pod-replacement persistence proof |
 | 2 Verification and incremental update | Not started | — |
 | 3 Trace and guardrail | Not started | — |
 | 4 Three-level offline testing | Not started | Human sign-offs required |
@@ -48,10 +48,22 @@ Only real pipeline measurements go here. Phase 0 establishes deployment and inge
 | OCR pages | 41 | `eval/results/phase0_baseline.json` | Real corpus extraction |
 | Indexer duration | 677.1 s | `eval/results/phase0_baseline.json` | Minikube `rahbar` |
 | Storage amplification | 1.059 | `eval/results/phase0_baseline.json` | Stored/original word ratio |
+| API ready replicas | 3 | `eval/results/phase1_platform.json` | Phase 1 minikube deployment |
+| Chroma ready replicas | 1 | `eval/results/phase1_platform.json` | StatefulSet with persistent claim |
+| Bound persistent claims | 9 | `eval/results/phase1_platform.json` | Includes data lake, quarantine, archive, results, traces |
+
+## Phase 1 platform decisions
+
+- The API remains a three-replica Deployment and Chroma remains a one-replica StatefulSet. The ingestion Job/CronJob is the only component containing vector-store write code.
+- Dedicated persistent claims now hold Batch A, Batch B, quarantine, archive, evaluation results, and traces. The existing corpus, Chroma, and Redis claims remain intact.
+- `COLLECTION_NAME`, `EMBED_MODEL`, and `EMBED_VERSION` are literal pod-template environment values, so Deployment revision history captures retrieval identity for later rollout undo.
+- A central `TraceRecord` is emitted as JSON to stdout and appended to one JSONL file per API pod on the trace claim. Phase 3 will complete prompt/context reconstruction and trace metrics.
+- The F1 script wrote an archive marker, deleted its writer pod, mounted the same claim in a replacement reader, and verified the marker. Machine-captured cluster and trace evidence is in `eval/results/phase1_platform.json`; the human screenshot is still pending.
+- The first post-rollout query timed out because the applied NetworkPolicy retained the default minikube gateway CIDR instead of the Windows Ollama address. After correcting it to `172.23.96.1/32`, the query again returned the correct 2.00 CGPA answer and page-24 citation.
 
 ## Open items
 
-1. Push the Phase 0 branch, open its pull request, and obtain the required teammate approval.
+1. Obtain teammate approval for the Phase 0 and Phase 1 pull requests.
 2. Teammate: accept the repository invitation and contribute review/commits that they can explain at the demo.
 3. Complete Phases 1–9, measured runs, human-authored/reviewed evaluation items, screenshots, and contribution confirmation.
 

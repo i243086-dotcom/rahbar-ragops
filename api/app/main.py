@@ -21,6 +21,7 @@ from .logjson import configure_logging, request_id_var
 from .providers.llm import get_provider
 from .retrieval import get_retriever
 from .routes import ask, health, metrics
+from .trace import TraceSink
 
 log = logging.getLogger("rahbar.api")
 
@@ -33,6 +34,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
     app.state.retriever = get_retriever(settings)
     app.state.provider = get_provider(settings)
     app.state.cache = None
+    app.state.trace_sink = TraceSink(settings.trace_dir)
     if settings.cache_enabled:
         from .services.cache import SemanticCache
 
