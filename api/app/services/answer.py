@@ -24,6 +24,7 @@ from ..providers.llm.base import InvalidModelOutput, LLMProvider, ProviderError,
 from ..retrieval.base import Retriever
 from ..routes import metrics
 from ..schemas import Answer, AskResponse, Citation, Passage, RetrievedRef
+from ..trace import TraceRecord, TraceSink
 from .cache import SemanticCache
 from .citations import reconcile
 from .guard import looks_like_injection
@@ -75,18 +76,38 @@ def _generate_validated(
 
 def answer_question(
     question: str, retriever: Retriever, provider: LLMProvider, settings: Settings,
-    cache: SemanticCache | None = None,
+    cache: SemanticCache | None = None, trace_sink: TraceSink | None = None,
 ) -> AskResponse:
     rid = request_id_var.get()
     followup = is_followup(question)
     flagged = looks_like_injection(question)
+    trace = TraceRecord(
+        trace_id=rid, user_query=question, embedding_model=settings.embed_model,
+        embedding_version=settings.embed_version, collection_name=settings.collection,
+        model=settings.llm_model, model_parameters={"temperature": settings.temperature},
+        filters={"superseded": False},
+        guardrail_actions=["query_injection_flagged"] if flagged else [],
+    )
 
     def respond(answer: str, citations: list[Citation], grounded: bool, confidence: Any,
                 passages: list[Passage], *, cached: bool | None, dropped: int = 0) -> AskResponse:
-        return AskResponse(
+        result = AskResponse(
             request_id=rid, answer=answer, citations=citations, answered_from_context=grounded,
             confidence=confidence, retrieved=_refs(passages), provider=provider.name,
             cached=cached, citations_dropped=dropped)
+        trace.response = answer
+        trace.citations = [citation.model_dump() for citation in citations]
+        trace.retrieved = [
+            {"chunk_id": p.chunk_id, "document_id": p.source, "document_version": p.doc_version,
+             "score": p.score} for p in passages
+        ]
+        trace.reranked_order = [p.chunk_id for p in passages]
+        trace.cache = "hit" if cached else ("miss" if cached is False else "skipped")
+        trace.outcome = "grounded" if grounded else "abstained_or_fallback"
+        trace.latency_ms["total"] = round((time.perf_counter() - started) * 1000, 3)
+        if trace_sink is not None:
+            trace_sink.write(trace)
+        return result
 
     cached_flag: bool | None = False if cache is not None else None
     started = time.perf_counter()
@@ -107,7 +128,17 @@ def answer_question(
         if hit is not None:
             hit = {**hit, "request_id": rid, "cached": True}
             log.info("answered", extra={"cache": "hit", "scope": scope, "follow_up": followup})
-            return AskResponse(**hit)
+            cached_response = AskResponse(**hit)
+            trace.response = cached_response.answer
+            trace.citations = [citation.model_dump() for citation in cached_response.citations]
+            trace.retrieved = [ref.model_dump() for ref in cached_response.retrieved]
+            trace.reranked_order = [ref.chunk_id for ref in cached_response.retrieved]
+            trace.cache = "hit"
+            trace.outcome = "cache_hit"
+            trace.latency_ms["total"] = round((time.perf_counter() - started) * 1000, 3)
+            if trace_sink is not None:
+                trace_sink.write(trace)
+            return cached_response
 
     try:
         passages = retriever.retrieve(question, k=settings.top_k, query_vector=vector)

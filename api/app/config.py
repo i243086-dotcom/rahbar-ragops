@@ -27,11 +27,13 @@ class Settings:
 
     # The embedding pin (section 4.4). The indexer reads the same ConfigMap key.
     embed_model: str = "nomic-embed-text"
+    embed_version: str = "nomic-embed-text"
 
     # Vector store
     chroma_host: str = "chroma"
     chroma_port: int = 8000
     collection: str = "rahbar"
+    trace_dir: str = ""
 
     # Retrieval and generation
     top_k: int = 5
@@ -72,9 +74,11 @@ def get_settings() -> Settings:
         retriever=os.environ.get("RETRIEVER", "stub"),
         llm_provider=os.environ.get("LLM_PROVIDER", "stub"),
         embed_model=os.environ.get("EMBED_MODEL", "nomic-embed-text"),
+        embed_version=os.environ.get("EMBED_VERSION", os.environ.get("EMBED_MODEL", "nomic-embed-text")),
         chroma_host=os.environ.get("CHROMA_HOST", "chroma"),
         chroma_port=_int("CHROMA_PORT", 8000),
-        collection=os.environ.get("CHROMA_COLLECTION", "rahbar"),
+        collection=os.environ.get("COLLECTION_NAME", os.environ.get("CHROMA_COLLECTION", "rahbar")),
+        trace_dir=os.environ.get("TRACE_DIR", ""),
         top_k=_int("TOP_K", 5),
         temperature=_float("TEMPERATURE", 0.2),
         llm_model=os.environ.get("LLM_MODEL", "llama3.2:3b"),
