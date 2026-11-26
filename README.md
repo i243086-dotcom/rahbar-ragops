@@ -78,6 +78,40 @@ To rebuild the index from the files already on the claim, run `make index`. Wait
 
 Only the query route is exposed through Ingress. Access the probe and metrics routes through an API pod or Service port-forward.
 
+## Assignment 03 commands
+
+These commands run from the repository root. Kubernetes evidence is written by the Jobs to
+PVC-backed storage and captured in committed `eval/results/` JSON; screenshots remain a human task.
+
+### Part A — verify and update data
+
+```bash
+python corpus/generate_batch_b.py
+scripts/load_batch_b.sh
+kubectl create -f k8s/jobs/ingest-batch-b.yaml
+# wait for completion, then rerun unchanged to show chunks_embedded=0
+scripts/remove_batch_b_doc.sh 09-irrelevant-gardening.md
+scripts/restore_batch_b_archive.sh 11-academic-rules-2026.md
+scripts/shots/A1.sh <completed-batch-b-job>
+scripts/shots/A2.sh <completed-unchanged-job>
+```
+
+`scripts/phase2_capture.py` captures the four completed lifecycle Jobs (first, unchanged,
+changed, and deleted) plus their persistent verification report and manifest. The checked-in
+`eval/results/phase2_data_lifecycle.json` is the run from this repository's minikube cluster.
+
+### Part D — traces and guardrails
+
+```bash
+python scripts/replay_trace.py <trace-id>
+python scripts/summarize_traces.py --input traces/phase3_samples.jsonl
+scripts/shots/D1.sh <trace-id>
+scripts/shots/D2.sh <trace-id>
+```
+
+Every API query is logged to stdout and `/traces/<pod>.jsonl`. The replay command performs no
+model call: it prints the recorded context and prompt and verifies the stored SHA-256 hash.
+
 ## CI and publishing
 
 CI runs on pushes to `dev` and PRs into `dev` or `main`. It checks lint, tests and coverage, validates the production overlay, builds and scans all three images, and evaluates the fixture corpus through a kind Ingress. The fixture job uses a deterministic embedding endpoint and the stub generator so it measures retrieval, citation validity and abstention without depending on model downloads. Production quality is measured separately with Ollama and the real corpus.

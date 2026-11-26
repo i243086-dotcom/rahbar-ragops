@@ -1,0 +1,72 @@
+{
+  "captured_at": "2026-11-26T16:21:11.520847+00:00",
+  "cluster": "minikube/rahbar",
+  "api": {
+    "kind": "Deployment",
+    "ready_replicas": 3,
+    "identity_env": {
+      "COLLECTION_NAME": "rahbar",
+      "EMBED_MODEL": "nomic-embed-text",
+      "EMBED_VERSION": "nomic-embed-text-v1",
+      "TRACE_DIR": "/traces"
+    }
+  },
+  "vector_store": {
+    "kind": "StatefulSet",
+    "ready_replicas": 1,
+    "claim_templates": [
+      "data"
+    ]
+  },
+  "persistent_claims": {
+    "archive": "Bound",
+    "corpus": "Bound",
+    "data-chroma-0": "Bound",
+    "data-lake-batch-a": "Bound",
+    "data-lake-batch-b": "Bound",
+    "eval-results": "Bound",
+    "quarantine": "Bound",
+    "redis-data": "Bound",
+    "traces": "Bound"
+  },
+  "cronjob": {
+    "schedule": "0 2 * * 0",
+    "concurrency_policy": "Forbid"
+  },
+  "persistence_proof": {
+    "archive_marker_after_replacement_pod": "phase1-persistence-20261126T161605Z"
+  },
+  "trace_proof": {
+    "trace_id": "691029b7f2c443a888cda2d487ac2867",
+    "user_query": "What CGPA puts an undergraduate student on academic warning?",
+    "embedding_model": "nomic-embed-text",
+    "embedding_version": "nomic-embed-text-v1",
+    "collection_name": "rahbar",
+    "timestamp": "2026-11-26T16:18:30.171124+00:00",
+    "rewritten_query": null,
+    "retrieved": [],
+    "filters": {
+      "superseded": false
+    },
+    "reranked_order": [],
+    "prompt_hash": null,
+    "model": "llama3.2:3b",
+    "model_parameters": {
+      "temperature": 0.2
+    },
+    "response": "The minimum CGPA required to avoid academic warning is 2.00.",
+    "citations": [
+      {
+        "source": "academic-rules-handbook-jun-2026.pdf",
+        "section": "5.5 If at the end of a semester (including summer semester) CGPA",
+        "page": 24
+      }
+    ],
+    "guardrail_actions": [],
+    "latency_ms": {
+      "total": 888.498
+    },
+    "cache": "hit",
+    "outcome": "cache_hit"
+  }
+}

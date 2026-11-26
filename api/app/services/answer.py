@@ -15,6 +15,8 @@ Every step that can fail ends in a well-formed AskResponse, never a 500.
 from __future__ import annotations
 
 import logging
+import hashlib
+import json
 import time
 from typing import Any
 
@@ -24,10 +26,12 @@ from ..providers.llm.base import InvalidModelOutput, LLMProvider, ProviderError,
 from ..retrieval.base import Retriever
 from ..routes import metrics
 from ..schemas import Answer, AskResponse, Citation, Passage, RetrievedRef
+from ..trace import TraceRecord, TraceSink
 from .cache import SemanticCache
 from .citations import reconcile
 from .guard import looks_like_injection
 from .policy import is_followup, should_cache
+from .prompt import build_messages
 
 log = logging.getLogger("rahbar.answer")
 
@@ -75,21 +79,42 @@ def _generate_validated(
 
 def answer_question(
     question: str, retriever: Retriever, provider: LLMProvider, settings: Settings,
-    cache: SemanticCache | None = None,
+    cache: SemanticCache | None = None, trace_sink: TraceSink | None = None,
 ) -> AskResponse:
     rid = request_id_var.get()
     followup = is_followup(question)
     flagged = looks_like_injection(question)
+    trace = TraceRecord(
+        trace_id=rid, user_query=question, embedding_model=settings.embed_model,
+        embedding_version=settings.embed_version, collection_name=settings.collection,
+        model=settings.llm_model, model_parameters={"temperature": settings.temperature},
+        filters={"superseded": False},
+        guardrail_actions=["query_injection_flagged"] if flagged else [],
+    )
 
     def respond(answer: str, citations: list[Citation], grounded: bool, confidence: Any,
                 passages: list[Passage], *, cached: bool | None, dropped: int = 0) -> AskResponse:
-        return AskResponse(
+        result = AskResponse(
             request_id=rid, answer=answer, citations=citations, answered_from_context=grounded,
             confidence=confidence, retrieved=_refs(passages), provider=provider.name,
             cached=cached, citations_dropped=dropped)
+        trace.response = answer
+        trace.citations = [citation.model_dump() for citation in citations]
+        trace.retrieved = [
+            {"chunk_id": p.chunk_id, "document_id": p.source, "document_version": p.doc_version,
+             "score": p.score} for p in passages
+        ]
+        trace.reranked_order = [p.chunk_id for p in passages]
+        trace.cache = "hit" if cached else ("miss" if cached is False else "skipped")
+        trace.outcome = "grounded" if grounded else "abstained_or_fallback"
+        trace.latency_ms["total"] = round((time.perf_counter() - started) * 1000, 3)
+        if trace_sink is not None:
+            trace_sink.write(trace)
+        return result
 
     cached_flag: bool | None = False if cache is not None else None
     started = time.perf_counter()
+    embedding_started = time.perf_counter()
     try:
         vector = retriever.embed_query(question)
         scope = retriever.scope(question)
@@ -98,6 +123,7 @@ def answer_question(
         metrics.FALLBACKS.labels(reason="embedding_error").inc()
         log.error("embedding failed", extra={"error": repr(exc)}, exc_info=True)
         return respond(FALLBACK_TEXT, [], False, "low", [], cached=cached_flag)
+    trace.latency_ms["embedding"] = round((time.perf_counter() - embedding_started) * 1000, 3)
 
     cacheable = cache is not None and vector is not None and not followup
     if cacheable:
@@ -107,15 +133,38 @@ def answer_question(
         if hit is not None:
             hit = {**hit, "request_id": rid, "cached": True}
             log.info("answered", extra={"cache": "hit", "scope": scope, "follow_up": followup})
-            return AskResponse(**hit)
+            cached_response = AskResponse(**hit)
+            trace.response = cached_response.answer
+            trace.citations = [citation.model_dump() for citation in cached_response.citations]
+            trace.retrieved = [ref.model_dump() for ref in cached_response.retrieved]
+            trace.reranked_order = [ref.chunk_id for ref in cached_response.retrieved]
+            trace.cache = "hit"
+            trace.outcome = "cache_hit"
+            trace.latency_ms["total"] = round((time.perf_counter() - started) * 1000, 3)
+            if trace_sink is not None:
+                trace_sink.write(trace)
+            return cached_response
 
+    retrieval_started = time.perf_counter()
     try:
         passages = retriever.retrieve(question, k=settings.top_k, query_vector=vector)
     except Exception as exc:     # noqa: BLE001
         metrics.FALLBACKS.labels(reason="retrieval_error").inc()
         log.error("retrieval failed", extra={"error": repr(exc)}, exc_info=True)
         return respond(FALLBACK_TEXT, [], False, "low", [], cached=cached_flag)
-    metrics.RETRIEVAL_LATENCY.observe(time.perf_counter() - started)
+    retrieval_seconds = time.perf_counter() - retrieval_started
+    metrics.RETRIEVAL_LATENCY.observe(retrieval_seconds)
+    trace.latency_ms["retrieval"] = round(retrieval_seconds * 1000, 3)
+    messages, removed_from_context = build_messages(question, passages, settings)
+    trace.prompt = messages
+    trace.prompt_hash = hashlib.sha256(json.dumps(messages, sort_keys=True).encode()).hexdigest()
+    trace.context = [
+        {"chunk_id": p.chunk_id, "document_id": p.source, "source": p.source,
+         "section": p.section, "page": p.page, "document_version": p.doc_version,
+         "text": p.text} for p in passages
+    ]
+    if removed_from_context:
+        trace.guardrail_actions.append(f"retrieved_instruction_removed:{removed_from_context}")
 
     extra: dict[str, Any] = {
         "retriever": retriever.name, "provider": provider.name, "top_k": settings.top_k,
@@ -137,6 +186,7 @@ def answer_question(
     usage_var.set({})
     answer, citations, dropped, failure = _generate_validated(question, passages, provider)
     metrics.GENERATION_LATENCY.observe(time.perf_counter() - t0)
+    trace.latency_ms["generation"] = round((time.perf_counter() - t0) * 1000, 3)
     usage = usage_var.get()
     if usage:
         metrics.TOKENS_IN.observe(usage.get("tokens_in", 0))

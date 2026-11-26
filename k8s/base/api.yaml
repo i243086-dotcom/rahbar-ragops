@@ -22,6 +22,9 @@ spec:
         fsGroup: 10001
         seccompProfile: {type: RuntimeDefault}
       terminationGracePeriodSeconds: 260
+      volumes:
+        - name: traces
+          persistentVolumeClaim: {claimName: traces}
       containers:
         - name: api
           image: rahbar-api:dev
@@ -30,6 +33,15 @@ spec:
           envFrom:
             - configMapRef: {name: rahbar-config}
             - secretRef: {name: rahbar-secret, optional: true}
+          env:
+            - {name: COLLECTION_NAME, value: rahbar}
+            - {name: EMBED_MODEL, value: nomic-embed-text}
+            - {name: EMBED_VERSION, value: nomic-embed-text-v1}
+            - {name: TRACE_DIR, value: /traces}
+            - name: POD_NAME
+              valueFrom: {fieldRef: {fieldPath: metadata.name}}
+          volumeMounts:
+            - {name: traces, mountPath: /traces}
           startupProbe:
             httpGet: {path: /healthz, port: 8000}
             failureThreshold: 30
