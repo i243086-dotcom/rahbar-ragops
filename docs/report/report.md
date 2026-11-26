@@ -1,6 +1,6 @@
 # RAHBAR RAGOps — Assignment 03
 
-Status: Phase 0 skeleton. All metric cells remain pending until a committed A03 result file exists.
+Status: Phase 1 working draft. Numerical cells are populated only from committed result JSON.
 
 ## Page 1 — System overview
 
@@ -10,11 +10,25 @@ Architecture: Kubernetes API Deployment reads a versioned Chroma collection; an 
 
 ## Page 2 — Figure 3 stage mapping
 
-Draft stages: ingest, verify, update data lake, update retrieval sources, offline testing, live testing, and coverage checking. File/evidence mappings will be populated phase by phase.
+| Paper stage | Pipeline responsibility | Evidence file | Remaining work |
+| --- | --- | --- | --- |
+| Ingest | Kubernetes indexer Job/CronJob is sole Chroma writer | `k8s/base/indexer-job.yaml` | Phase 2 incremental manifest |
+| Verify | Post-extraction pre-chunk checks | Phase 2 | Four checks and reports |
+| Update data lake | Batch A/B, quarantine, archive PVCs | `k8s/base/ragops-storage.yaml` | Phase 2 lifecycle logic |
+| Update retrieval sources | Chroma StatefulSet and pinned identity | `k8s/base/chroma-statefulset.yaml` | Phase 2 scoped updates |
+| Offline testing | Evaluation results PVC | `k8s/base/ragops-storage.yaml` | Phase 4 suite and Job |
+| Live testing | Per-query stdout and persistent JSONL traces | `api/app/trace.py` | Phase 3 full trace |
+| Check coverage | Planned trace/golden similarity check | Phase 7 | Not implemented |
 
 ## Page 3 — Table 2 qualities
 
-Draft qualities: adaptability, monitorability, observability, traceability, and reliability. Thresholds remain pending real measurements.
+| Quality | Measurement | Threshold | Evidence |
+| --- | --- | --- | --- |
+| Adaptability | Candidate versus baseline suite | Phase 5 decision | Pending experiment |
+| Monitorability | Trace summary and coverage | Phase 7/8 decision | Trace sink exists |
+| Observability | Latency, similarity, abstention, cache, injection | Phase 3 decision | Trace schema established |
+| Traceability | Query record and reconstruction | Every query; exact rebuild | Phase 3 pending |
+| Reliability | Readiness, persistence, rollout | All replicas ready; PVC survives restart | `eval/results/phase1_platform.json` |
 
 ## Page 4 — Part A
 
