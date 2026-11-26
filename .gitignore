@@ -23,6 +23,7 @@ venv/
 # Local scratch
 *.log
 .DS_Store
+.tools/
 
 # Index dumps from `pipeline.run --dry-run --dump`
 chunks.jsonl
