@@ -8,6 +8,11 @@ These tasks must be completed by `m-shaheer-shoaib` from his own GitHub account.
 2. Clone the new repository, configure your own Git identity, and inspect `docs/A02-AUDIT.md`.
 3. Review and approve the Phase 0 PR only after reading its verification output. If something is wrong, request changes rather than approving.
 
+## Remaining-phase handoff
+
+The complete ordered handoff, clone commands, human-input protocol, screenshot commands, and
+review responsibilities are in [SHAHEER-REMAINING-PHASES.md](SHAHEER-REMAINING-PHASES.md).
+
 ## Reserved later tasks (about 35–50 minutes total)
 
 - Write some of the human golden questions in your own words and commit them on your own branch (10 minutes).
