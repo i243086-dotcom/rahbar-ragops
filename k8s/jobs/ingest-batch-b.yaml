@@ -1,0 +1,57 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  generateName: ingest-batch-b-
+  namespace: rahbar
+  labels: {ragops-part: A}
+spec:
+  backoffLimit: 1
+  activeDeadlineSeconds: 1800
+  ttlSecondsAfterFinished: 86400
+  template:
+    metadata:
+      labels: {app: indexer, batch: b}
+    spec:
+      serviceAccountName: indexer
+      automountServiceAccountToken: false
+      restartPolicy: Never
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        fsGroup: 10001
+        seccompProfile: {type: RuntimeDefault}
+      volumes:
+        - {name: batch-b, persistentVolumeClaim: {claimName: data-lake-batch-b}}
+        - {name: quarantine, persistentVolumeClaim: {claimName: quarantine}}
+        - {name: archive, persistentVolumeClaim: {claimName: archive}}
+        - {name: results, persistentVolumeClaim: {claimName: eval-results}}
+        - {name: tmp, emptyDir: {}}
+      containers:
+        - name: indexer
+          image: rahbar-indexer:dev
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef: {name: rahbar-config}
+          env:
+            - {name: CORPUS_DIR, value: /data-lake/batch-b}
+            - {name: COLLECTION_NAME, value: rahbar-batch-b}
+            - {name: EMBED_MODEL, value: nomic-embed-text}
+            - {name: EMBED_VERSION, value: nomic-embed-text-v1}
+            - {name: QUARANTINE_DIR, value: /data-lake/quarantine/batch-b}
+            - {name: ARCHIVE_DIR, value: /data-lake/archive/batch-b}
+            - {name: RESULTS_DIR, value: /results}
+            - {name: MANIFEST_PATH, value: /results/batch-b-index-manifest.json}
+          volumeMounts:
+            - {name: batch-b, mountPath: /data-lake/batch-b}
+            - {name: quarantine, mountPath: /data-lake/quarantine}
+            - {name: archive, mountPath: /data-lake/archive}
+            - {name: results, mountPath: /results}
+            - {name: tmp, mountPath: /tmp}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          resources:
+            requests: {cpu: 250m, memory: 512Mi}
+            limits: {cpu: 1, memory: 1Gi}

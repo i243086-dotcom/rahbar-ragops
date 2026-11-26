@@ -32,7 +32,11 @@ Architecture: Kubernetes API Deployment reads a versioned Chroma collection; an 
 
 ## Page 4 — Part A
 
-Verification, Batch B, incremental update, orphan, archive, and restore results: pending Phase 2 result JSON.
+Batch B verification is captured in `eval/results/phase2_data_lifecycle.json`: 4 of 10 remaining
+documents passed and 6 failed. The checks caught two exact duplicates, one near duplicate, one
+truncated file, missing title metadata, and an older academic-rules version. The unchanged rerun
+embedded 0 chunks; a changed library document embedded/replaced 1; deletion removed 1 gardening
+chunk and left a 4-chunk collection. Archive restoration is an explicit, SHA-256-verified helper.
 
 ## Page 5 — Part B
 
