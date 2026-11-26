@@ -1,5 +1,12 @@
 # AI usage
 
+## Assignment 03 additions
+
+OpenAI Codex assisted with Phase 0 environment inspection, source extraction, A02 gap auditing,
+progress/checklist scaffolding, and the report build skeleton. All generated material is subject
+to team review. No A03 metric has been generated or reported in Phase 0, and no human question,
+review, label, contribution, or screenshot is claimed.
+
 Each of us documents our own use in our own section. A specific disclosure carries no penalty.
 
 ## Student A (data and intelligence)
