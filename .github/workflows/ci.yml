@@ -91,7 +91,11 @@ jobs:
           mkdir -p /tmp/rahbar-ci-diagnostics
           kubectl get pods -A
           kubectl -n rahbar get jobs,pods -o wide | tee /tmp/rahbar-ci-diagnostics/workloads.txt
-          kubectl -n rahbar describe job/indexer > /tmp/rahbar-ci-diagnostics/indexer-job.txt 2>&1 || true
+          for job in $(kubectl -n rahbar get jobs -l app=indexer -o name); do
+            safe_job=$(basename "$job")
+            kubectl -n rahbar describe "$job" > "/tmp/rahbar-ci-diagnostics/${safe_job}-describe.txt" 2>&1 || true
+            kubectl -n rahbar logs "$job" --all-containers=true > "/tmp/rahbar-ci-diagnostics/${safe_job}.log" 2>&1 || true
+          done
           for pod in $(kubectl -n rahbar get pods -l app=indexer -o name); do
             kubectl -n rahbar describe "$pod" > "/tmp/rahbar-ci-diagnostics/$(basename "$pod")-describe.txt" 2>&1 || true
             kubectl -n rahbar logs "$pod" --all-containers=true > "/tmp/rahbar-ci-diagnostics/$(basename "$pod").log" 2>&1 || true
