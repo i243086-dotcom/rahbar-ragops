@@ -1,0 +1,7 @@
+{
+  "recall_at_5": 0.25,
+  "faithfulness_citation_proxy": 0.354839,
+  "human_faithfulness": 1.0,
+  "latency_p95_ms": 18005.342,
+  "abstention_correctness": 1.0
+}

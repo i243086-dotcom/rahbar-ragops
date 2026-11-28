@@ -1,0 +1,7 @@
+# Release-gate thresholds. Values are deliberately explicit and measured against the
+# Phase 4 baseline result supplied to phase5_gate.py.
+max_recall_at_5_drop: 0.02
+min_faithfulness: 0.80
+max_latency_p95_ms: 300000
+min_abstention_correctness_delta: 0.0
+

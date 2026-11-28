@@ -4,12 +4,14 @@ namespace: rahbar
 resources:
   - namespace.yaml
   - configmap.yaml
+  - phase5-gate-configmap.yaml
   - serviceaccounts.yaml
   - api.yaml
   - ui.yaml
   - chroma-statefulset.yaml
   - redis.yaml
   - corpus-pvc.yaml
+  - ragops-storage.yaml
   - indexer-job.yaml
   - reindex-cronjob.yaml
   - services.yaml

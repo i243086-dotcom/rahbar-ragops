@@ -31,15 +31,32 @@ spec:
               persistentVolumeClaim: {claimName: corpus}
             - name: tmp
               emptyDir: {}
+            - {name: batch-a, persistentVolumeClaim: {claimName: data-lake-batch-a}}
+            - {name: batch-b, persistentVolumeClaim: {claimName: data-lake-batch-b}}
+            - {name: quarantine, persistentVolumeClaim: {claimName: quarantine}}
+            - {name: archive, persistentVolumeClaim: {claimName: archive}}
+            - {name: results, persistentVolumeClaim: {claimName: eval-results}}
           containers:
             - name: indexer
               image: rahbar-indexer:dev
               imagePullPolicy: IfNotPresent
               envFrom:
                 - configMapRef: {name: rahbar-config}
+              env:
+                - {name: COLLECTION_NAME, value: rahbar}
+                - {name: EMBED_MODEL, value: nomic-embed-text}
+                - {name: EMBED_VERSION, value: nomic-embed-text-v1}
+                - {name: QUARANTINE_DIR, value: /data-lake/quarantine}
+                - {name: ARCHIVE_DIR, value: /data-lake/archive}
+                - {name: RESULTS_DIR, value: /results}
               volumeMounts:
                 - {name: corpus, mountPath: /corpus, readOnly: true}
                 - {name: tmp, mountPath: /tmp}
+                - {name: batch-a, mountPath: /data-lake/batch-a}
+                - {name: batch-b, mountPath: /data-lake/batch-b}
+                - {name: quarantine, mountPath: /data-lake/quarantine}
+                - {name: archive, mountPath: /data-lake/archive}
+                - {name: results, mountPath: /results}
               securityContext:
                 allowPrivilegeEscalation: false
                 readOnlyRootFilesystem: true

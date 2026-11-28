@@ -4,7 +4,12 @@ set -euo pipefail
 overlay=${1:?pass a Kustomize overlay}
 corpus=${2:--}
 loader_image=${3:-rahbar-indexer:dev}
-scratch=$(mktemp -d)
+# Keep generated manifests in the repository's ignored scratch area.  On
+# Windows/WSL, /tmp can be cleaned or translated unexpectedly while the
+# corpus-loader pod is being deleted, which used to remove stack.yaml before
+# it was applied.
+mkdir -p .tools
+scratch=$(mktemp -d "$PWD/.tools/rahbar-deploy.XXXXXX")
 loader_started=false
 cleanup() {
   if $loader_started; then
@@ -51,8 +56,21 @@ if [[ "$corpus" != "-" ]]; then
   loader_started=true
   kubectl -n rahbar wait --for=condition=Ready pod/corpus-loader --timeout=180s
   kubectl -n rahbar cp "$corpus/." corpus-loader:/corpus
-  kubectl -n rahbar delete pod corpus-loader --wait=true
+  # A successful deletion can still return non-zero when the pod disappears
+  # during the wait.  Clear the cleanup flag first so set -e cannot remove
+  # the generated manifests before they are applied.
   loader_started=false
+  kubectl -n rahbar delete pod corpus-loader --wait=true || true
+fi
+
+if [[ -n "${RAHBAR_DIAGNOSTICS_DIR:-}" ]]; then
+  python - "$scratch/job.yaml" <<'PY'
+import pathlib, sys, yaml
+p = pathlib.Path(sys.argv[1])
+doc = yaml.safe_load(p.read_text())
+doc.setdefault("spec", {})["backoffLimit"] = 0
+p.write_text(yaml.safe_dump(doc))
+PY
 fi
 
 kubectl apply -f "$scratch/stack.yaml"
@@ -62,6 +80,19 @@ kubectl -n rahbar create -f "$scratch/job.yaml"
 job=$(cat "$scratch/job-name")
 if ! kubectl -n rahbar wait --for=condition=complete "job/$job" --timeout="${INDEX_TIMEOUT:-20m}"; then
   kubectl -n rahbar describe "job/$job"
+  # Preserve the failed pod's diagnostics before the job cleanup removes it.
+  # CI copies this directory into the diagnostics artifact on failure.
+  diag_dir=${RAHBAR_DIAGNOSTICS_DIR:-}
+  if [[ -n "$diag_dir" ]]; then
+    mkdir -p "$diag_dir"
+    kubectl -n rahbar describe "job/$job" > "$diag_dir/${job}-describe.txt" 2>&1 || true
+    for pod in $(kubectl -n rahbar get pods -l "job-name=$job" -o name 2>/dev/null || true); do
+      base=$(basename "$pod")
+      kubectl -n rahbar describe "$pod" > "$diag_dir/${base}-describe.txt" 2>&1 || true
+      kubectl -n rahbar logs "$pod" --all-containers=true > "$diag_dir/${base}.log" 2>&1 || true
+      kubectl -n rahbar logs "$pod" --all-containers=true --previous > "$diag_dir/${base}-previous.log" 2>&1 || true
+    done
+  fi
   kubectl -n rahbar logs "job/$job" --all-containers=true || true
   exit 1
 fi

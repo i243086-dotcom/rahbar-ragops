@@ -1,0 +1,101 @@
+[
+  {
+    "file": "01-services-policy.md",
+    "page_count": 1,
+    "superseded": false,
+    "sha256": "cb257303c583215fca565aabb54f7bcc7457b19de975a1e636a7f7fdac2da61a",
+    "name": "Student Services Policy",
+    "document_id": "services-policy",
+    "doc_version": "2026"
+  },
+  {
+    "file": "02-services-exact-copy-a.md",
+    "page_count": 1,
+    "superseded": false,
+    "sha256": "cb257303c583215fca565aabb54f7bcc7457b19de975a1e636a7f7fdac2da61a",
+    "name": "Student Services Exact Copy A",
+    "document_id": "services-copy-a",
+    "doc_version": "2026"
+  },
+  {
+    "file": "03-services-exact-copy-b.md",
+    "page_count": 1,
+    "superseded": false,
+    "sha256": "cb257303c583215fca565aabb54f7bcc7457b19de975a1e636a7f7fdac2da61a",
+    "name": "Student Services Exact Copy B",
+    "document_id": "services-copy-b",
+    "doc_version": "2026"
+  },
+  {
+    "file": "04-services-near-copy.md",
+    "page_count": 1,
+    "superseded": false,
+    "sha256": "568b8a79dd19faa4d614804e0bd9b6e958756cdc0fe9607c8702cf2c223fdfe0",
+    "name": "Student Services Near Copy",
+    "document_id": "services-near",
+    "doc_version": "2026"
+  },
+  {
+    "file": "05-truncated.txt",
+    "page_count": 1,
+    "superseded": false,
+    "sha256": "cdd6c109503d4e19cad782eef4d9ba162af0d84727445edbb9d300df1adc6048",
+    "name": "Truncated Policy",
+    "document_id": "truncated-policy",
+    "doc_version": "2026",
+    "truncated": true
+  },
+  {
+    "file": "06-missing-metadata.md",
+    "page_count": 1,
+    "superseded": false,
+    "sha256": "84a2ad3ade05e22b9a0840d217094b0852bfae9206680941cf686de246b01277",
+    "document_id": "missing-metadata",
+    "doc_version": "2026"
+  },
+  {
+    "file": "07-academic-rules-2027.md",
+    "page_count": 1,
+    "superseded": false,
+    "sha256": "ef183109a6903f01e599e459ff59f80b3d42b081c391b06c59b4fbb6dfcebcc8",
+    "name": "Academic Rules 2027",
+    "document_id": "undergraduate-academic-rules",
+    "doc_version": "2027-01"
+  },
+  {
+    "file": "08-injected-instruction.md",
+    "page_count": 1,
+    "superseded": false,
+    "sha256": "44af22023a432d2518248ba3423bb2ba2a587c966514613535573f631ba389bf",
+    "name": "Injected Instruction Test",
+    "document_id": "injection-test",
+    "doc_version": "2026"
+  },
+  {
+    "file": "09-irrelevant-gardening.md",
+    "page_count": 1,
+    "superseded": false,
+    "sha256": "171c097d4f9c929aff3bac7ddaf6ff97ebf2788c3acb2e4a943dead13950d48c",
+    "name": "Gardening Noise",
+    "document_id": "gardening-noise",
+    "doc_version": "2026"
+  },
+  {
+    "file": "10-library-hours.md",
+    "page_count": 1,
+    "superseded": false,
+    "sha256": "b0bbbdec8de35a8b024f7d2a198d4a172fc579c59f1e385e6a60c11b8504ceca",
+    "name": "Library Hours",
+    "document_id": "library-hours",
+    "doc_version": "2026"
+  },
+  {
+    "file": "11-academic-rules-2026.md",
+    "page_count": 1,
+    "superseded": false,
+    "sha256": "5f5e7b9c03df98a09f476344c3fde681e44fe3bdb1d550eda84dda743db34d71",
+    "name": "Academic Rules 2026 Rollback Copy",
+    "document_id": "undergraduate-academic-rules",
+    "doc_version": "2026-06"
+  }
+]

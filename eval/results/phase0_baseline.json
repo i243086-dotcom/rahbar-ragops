@@ -1,0 +1,294 @@
+{
+  "captured_at": "2026-11-26T16:06:15.240723+00:00",
+  "cluster": "minikube/rahbar",
+  "indexer_job": "indexer-1795708213027626558",
+  "indexer_events": [
+    {
+      "ts": "2026-11-26T15:50:50Z",
+      "logger": "rahbar.indexer",
+      "msg": "indexer starting",
+      "dummy": false,
+      "embed_model": "nomic-embed-text",
+      "collection": "rahbar",
+      "chroma": "chroma:8000",
+      "pod": "indexer-1795708213027626558-7j7dh"
+    },
+    {
+      "ts": "2026-11-26T15:53:00Z",
+      "logger": "rahbar.indexer.extract",
+      "msg": "extracted",
+      "source": "undergraduate-academic-rules-aug-2023.pdf",
+      "pages": 26,
+      "ocr_pages": 24,
+      "empty_pages": 1
+    },
+    {
+      "ts": "2026-11-26T15:53:00Z",
+      "logger": "rahbar.indexer",
+      "msg": "chunked",
+      "source": "undergraduate-academic-rules-aug-2023.pdf",
+      "chunks": 81,
+      "doc_version": "2023-08",
+      "superseded": true
+    },
+    {
+      "ts": "2026-11-26T15:53:18Z",
+      "logger": "rahbar.indexer.extract",
+      "msg": "extracted",
+      "source": "academic-rules-handbook-jun-2026.pdf",
+      "pages": 58,
+      "ocr_pages": 5,
+      "empty_pages": 3
+    },
+    {
+      "ts": "2026-11-26T15:53:18Z",
+      "logger": "rahbar.indexer",
+      "msg": "chunked",
+      "source": "academic-rules-handbook-jun-2026.pdf",
+      "chunks": 183,
+      "doc_version": "2026-06",
+      "superseded": false
+    },
+    {
+      "ts": "2026-11-26T15:53:20Z",
+      "logger": "rahbar.indexer.extract",
+      "msg": "extracted",
+      "source": "prospectus-2026-academic-rules-and-regulations.pdf",
+      "pages": 5,
+      "ocr_pages": 0,
+      "empty_pages": 0
+    },
+    {
+      "ts": "2026-11-26T15:53:20Z",
+      "logger": "rahbar.indexer",
+      "msg": "chunked",
+      "source": "prospectus-2026-academic-rules-and-regulations.pdf",
+      "chunks": 10,
+      "doc_version": "2026",
+      "superseded": false
+    },
+    {
+      "ts": "2026-11-26T15:53:37Z",
+      "logger": "rahbar.indexer.extract",
+      "msg": "extracted",
+      "source": "student-handbook-jun-2026.pdf",
+      "pages": 64,
+      "ocr_pages": 4,
+      "empty_pages": 2
+    },
+    {
+      "ts": "2026-11-26T15:53:37Z",
+      "logger": "rahbar.indexer",
+      "msg": "chunked",
+      "source": "student-handbook-jun-2026.pdf",
+      "chunks": 159,
+      "doc_version": "2026-06",
+      "superseded": false
+    },
+    {
+      "ts": "2026-11-26T15:53:46Z",
+      "logger": "rahbar.indexer.extract",
+      "msg": "extracted",
+      "source": "annual-report-2019-20.pdf",
+      "pages": 33,
+      "ocr_pages": 0,
+      "empty_pages": 0
+    },
+    {
+      "ts": "2026-11-26T15:53:46Z",
+      "logger": "rahbar.indexer",
+      "msg": "chunked",
+      "source": "annual-report-2019-20.pdf",
+      "chunks": 43,
+      "doc_version": "2019-20",
+      "superseded": false
+    },
+    {
+      "ts": "2026-11-26T15:54:02Z",
+      "logger": "rahbar.indexer.extract",
+      "msg": "extracted",
+      "source": "annual-report-2023-24.pdf",
+      "pages": 85,
+      "ocr_pages": 0,
+      "empty_pages": 0
+    },
+    {
+      "ts": "2026-11-26T15:54:02Z",
+      "logger": "rahbar.indexer",
+      "msg": "chunked",
+      "source": "annual-report-2023-24.pdf",
+      "chunks": 160,
+      "doc_version": "2023-24",
+      "superseded": false
+    },
+    {
+      "ts": "2026-11-26T15:54:02Z",
+      "logger": "rahbar.indexer",
+      "msg": "chunked",
+      "source": "fee-structure-page.html",
+      "chunks": 10,
+      "doc_version": "2026-27",
+      "superseded": false
+    },
+    {
+      "ts": "2026-11-26T15:54:02Z",
+      "logger": "rahbar.indexer",
+      "msg": "chunked",
+      "source": "grading-page.html",
+      "chunks": 7,
+      "doc_version": "2026",
+      "superseded": false
+    },
+    {
+      "ts": "2026-11-26T15:54:37Z",
+      "logger": "rahbar.indexer.extract",
+      "msg": "extracted",
+      "source": "faculty-entrepreneurship-and-technical-start-ups-policy.pdf",
+      "pages": 8,
+      "ocr_pages": 8,
+      "empty_pages": 0
+    },
+    {
+      "ts": "2026-11-26T15:54:37Z",
+      "logger": "rahbar.indexer",
+      "msg": "chunked",
+      "source": "faculty-entrepreneurship-and-technical-start-ups-policy.pdf",
+      "chunks": 12,
+      "doc_version": "2022-05",
+      "superseded": false
+    },
+    {
+      "ts": "2026-11-26T15:54:37Z",
+      "logger": "rahbar.indexer",
+      "msg": "chunking summary",
+      "documents": 9,
+      "skipped": [],
+      "ocr_pages": 41,
+      "chunks": 665,
+      "original_words": 86640,
+      "stored_words": 91778,
+      "storage_amplification": 1.059
+    },
+    {
+      "ts": "2026-11-26T16:02:06Z",
+      "logger": "rahbar.indexer",
+      "msg": "embedded",
+      "vectors": 665,
+      "dimension": 768,
+      "model": "nomic-embed-text"
+    },
+    {
+      "ts": "2026-11-26T16:02:10Z",
+      "logger": "rahbar.indexer",
+      "msg": "cache invalidated",
+      "keys_removed": 0
+    },
+    {
+      "ts": "2026-11-26T16:02:10Z",
+      "logger": "rahbar.indexer",
+      "msg": "indexer finished",
+      "chunks": 665,
+      "seconds": 677.1
+    }
+  ],
+  "cited_query": {
+    "request_id": "f235b814d3fa4a1cbf6744b73a51ccf5",
+    "answer": "The minimum CGPA required to avoid academic warning is 2.00.",
+    "citations": [
+      {
+        "source": "academic-rules-handbook-jun-2026.pdf",
+        "section": "5.5 If at the end of a semester (including summer semester) CGPA",
+        "page": 24
+      }
+    ],
+    "answered_from_context": true,
+    "confidence": "high",
+    "retrieved": [
+      {
+        "chunk_id": "academic-rules-handbook-jun-2026-0107",
+        "source": "academic-rules-handbook-jun-2026.pdf",
+        "section": "5.4 Minimum CGPA required to avoid academic warning is 2.00",
+        "page": 24,
+        "score": 0.8443
+      },
+      {
+        "chunk_id": "academic-rules-handbook-jun-2026-0108",
+        "source": "academic-rules-handbook-jun-2026.pdf",
+        "section": "5.5 If at the end of a semester (including summer semester) CGPA",
+        "page": 24,
+        "score": 0.8277
+      },
+      {
+        "chunk_id": "grading-page-0004",
+        "source": "grading-page.html",
+        "section": "Warning/Probation",
+        "page": 1,
+        "score": 0.8061
+      },
+      {
+        "chunk_id": "academic-rules-handbook-jun-2026-0110",
+        "source": "academic-rules-handbook-jun-2026.pdf",
+        "section": "5.3 Any deviation from Rule 5.2 above if necessitated by the",
+        "page": 25,
+        "score": 0.7805
+      },
+      {
+        "chunk_id": "academic-rules-handbook-jun-2026-0082",
+        "source": "academic-rules-handbook-jun-2026.pdf",
+        "section": "3.28 If the CGPA of an undergraduate student fall below the",
+        "page": 17,
+        "score": 0.7638
+      }
+    ],
+    "provider": "ollama",
+    "cached": true,
+    "citations_dropped": 0
+  },
+  "abstention_query": {
+    "request_id": "c70df9ea66194dc99d266c159b085171",
+    "answer": "The documents do not cover hostel room application.",
+    "citations": [],
+    "answered_from_context": false,
+    "confidence": "low",
+    "retrieved": [
+      {
+        "chunk_id": "academic-rules-handbook-jun-2026-0087",
+        "source": "academic-rules-handbook-jun-2026.pdf",
+        "section": "4. Registration",
+        "page": 19,
+        "score": 0.6548
+      },
+      {
+        "chunk_id": "faculty-entrepreneurship-and-technical-start-ups-policy-0005",
+        "source": "faculty-entrepreneurship-and-technical-start-ups-policy.pdf",
+        "section": "SECTION - I",
+        "page": 4,
+        "score": 0.6439
+      },
+      {
+        "chunk_id": "fee-structure-page-0008",
+        "source": "fee-structure-page.html",
+        "section": "Payment Instructions",
+        "page": 1,
+        "score": 0.633
+      },
+      {
+        "chunk_id": "student-handbook-jun-2026-0127",
+        "source": "student-handbook-jun-2026.pdf",
+        "section": "1. Habitual Applicants. An 5. Students suffering",
+        "page": 47,
+        "score": 0.623
+      },
+      {
+        "chunk_id": "fee-structure-page-0009",
+        "source": "fee-structure-page.html",
+        "section": "UBL: MCA A/C 344057508",
+        "page": 1,
+        "score": 0.62
+      }
+    ],
+    "provider": "ollama",
+    "cached": false,
+    "citations_dropped": 0
+  }
+}

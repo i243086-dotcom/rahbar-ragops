@@ -1,0 +1,17 @@
+pairs:
+  - {a: "undergraduate academic warning CGPA", b: "CGPA threshold that places a bachelor student on warning", unrelated: "campus cafeteria menu"}
+  - {a: "attendance required for the final examination", b: "minimum class presence needed to sit the final", unrelated: "library opening hours"}
+  - {a: "minimum CGPA for graduation", b: "graduation grade-point requirement", unrelated: "service request acknowledgement"}
+  - {a: "tuition fee per credit hour", b: "price charged for each course credit", unrelated: "academic warning duration"}
+  - {a: "grade points for an A", b: "GPA value assigned to grade A", unrelated: "hostel curfew"}
+  - {a: "course withdrawal refund deadline", b: "when tuition is returned after dropping a course", unrelated: "faculty startup approval"}
+  - {a: "repeat a course to improve CGPA", b: "retake policy for improving a grade", unrelated: "admission fee"}
+  - {a: "student service request portal", b: "online place for submitting a student request", unrelated: "graduation CGPA"}
+  - {a: "service request acknowledgement time", b: "how quickly a complete request is acknowledged", unrelated: "attendance condonation"}
+  - {a: "library identity card after 17:00", b: "ID needed for evening library entry", unrelated: "grade points"}
+  - {a: "holiday library closure", b: "check whether the library is closed for a holiday", unrelated: "tuition refund"}
+  - {a: "current academic rules version", b: "latest non-superseded rules document", unrelated: "cafeteria meal"}
+  - {a: "archive an older policy version", b: "retain a superseded document for rollback", unrelated: "bus timetable"}
+  - {a: "retrieved prompt injection", b: "malicious instruction inside retrieved evidence", unrelated: "credit-hour fee"}
+  - {a: "official requests use the university portal", b: "formal requests are submitted through the portal", unrelated: "academic-warning CGPA"}
+

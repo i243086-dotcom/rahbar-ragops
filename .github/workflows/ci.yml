@@ -76,10 +76,11 @@ jobs:
       - uses: actions/download-artifact@v4
         with: {name: ci-images, path: /tmp}
       - run: |
-          pip install httpx==0.28.1 PyYAML==6.0.2
+          python -m pip install --disable-pip-version-check --prefer-binary \
+            --timeout 120 --retries 10 httpx==0.28.1 PyYAML==6.0.2
           docker load -i /tmp/images.tar.gz
           kind load docker-image --name rahbar rahbar-api:dev rahbar-ui:dev rahbar-indexer:dev
-          INDEX_TIMEOUT=3m EVAL_RUNNER=eval/run_eval.py PLATFORM_EVIDENCE_DIR=/tmp/rahbar-platform-evidence bash scripts/ci-stack.sh
+          INDEX_TIMEOUT=3m EVAL_RUNNER=eval/run_eval.py PLATFORM_EVIDENCE_DIR=/tmp/rahbar-platform-evidence RAHBAR_DIAGNOSTICS_DIR=/tmp/rahbar-ci-diagnostics bash scripts/ci-stack.sh
       - uses: actions/upload-artifact@v4
         if: always()
         with: {name: fixture-evaluation, path: /tmp/rahbar-fixture-results.json}
@@ -88,8 +89,22 @@ jobs:
         with: {name: fixture-platform-evidence, path: /tmp/rahbar-platform-evidence}
       - if: failure()
         run: |
+          mkdir -p /tmp/rahbar-ci-diagnostics
           kubectl get pods -A
-          kubectl -n rahbar describe pod chroma-0 || true
-          kubectl -n rahbar logs chroma-0 --previous || kubectl -n rahbar logs chroma-0 || true
-          kubectl -n rahbar logs -l app=indexer --tail=60 || true
-          kubectl -n rahbar logs -l app=api --tail=25 || true
+          kubectl -n rahbar get jobs,pods -o wide | tee /tmp/rahbar-ci-diagnostics/workloads.txt
+          for job in $(kubectl -n rahbar get jobs -l app=indexer -o name); do
+            safe_job=$(basename "$job")
+            kubectl -n rahbar describe "$job" > "/tmp/rahbar-ci-diagnostics/${safe_job}-describe.txt" 2>&1 || true
+            kubectl -n rahbar logs "$job" --all-containers=true > "/tmp/rahbar-ci-diagnostics/${safe_job}.log" 2>&1 || true
+          done
+          for pod in $(kubectl -n rahbar get pods -l app=indexer -o name); do
+            kubectl -n rahbar describe "$pod" > "/tmp/rahbar-ci-diagnostics/$(basename "$pod")-describe.txt" 2>&1 || true
+            kubectl -n rahbar logs "$pod" --all-containers=true > "/tmp/rahbar-ci-diagnostics/$(basename "$pod").log" 2>&1 || true
+            kubectl -n rahbar logs "$pod" --all-containers=true --previous > "/tmp/rahbar-ci-diagnostics/$(basename "$pod")-previous.log" 2>&1 || true
+          done
+          kubectl -n rahbar describe pod chroma-0 > /tmp/rahbar-ci-diagnostics/chroma-describe.txt 2>&1 || true
+          kubectl -n rahbar logs chroma-0 --previous > /tmp/rahbar-ci-diagnostics/chroma-previous.log 2>&1 || kubectl -n rahbar logs chroma-0 > /tmp/rahbar-ci-diagnostics/chroma.log 2>&1 || true
+          kubectl -n rahbar logs -l app=api --all-containers=true > /tmp/rahbar-ci-diagnostics/api.log 2>&1 || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: ci-kubernetes-diagnostics, path: /tmp/rahbar-ci-diagnostics}

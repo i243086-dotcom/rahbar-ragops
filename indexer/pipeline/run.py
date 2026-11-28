@@ -64,6 +64,14 @@ def discover(corpus_dir: str) -> list[tuple[Path, str, bool]]:
     return found
 
 
+def metadata_by_file(corpus_dir: str) -> dict[str, dict[str, object]]:
+    index = Path(corpus_dir) / "_index.json"
+    if not index.exists():
+        return {}
+    entries = json.loads(index.read_text(encoding="utf-8"))
+    return {str(entry["file"]): entry for entry in entries}
+
+
 def build_chunks(settings: IndexerSettings) -> tuple[list[Chunk], dict[str, object]]:
     """Stages 1 to 3 over every document. A document that fails to extract is logged and
     skipped (one bad PDF must not stop the other nine), and listed in the summary."""
@@ -107,13 +115,77 @@ def build_chunks(settings: IndexerSettings) -> tuple[list[Chunk], dict[str, obje
 def run_pipeline(settings: IndexerSettings) -> int:
     from .cache import invalidate_cache
     from .embed import embed
-    from .store import store
+    from .incremental import update_incrementally
 
-    all_chunks, summary = build_chunks(settings)
+    from .chunk import chunk, count_words
+    from .clean import clean
+    from .extract import extract
+    from .verify import verify_documents, write_report
+
+    discovered = discover(settings.corpus_dir)
+    metadata = metadata_by_file(settings.corpus_dir)
+    extracted = []
+    skipped = []
+    for path, doc_version, superseded in discovered:
+        try:
+            document = clean(extract(str(path), doc_version, superseded,
+                                     skip_ocr=settings.skip_ocr))
+            entry = metadata.get(path.name, {
+                "file": path.name, "name": path.stem, "doc_version": doc_version,
+                "document_id": path.stem,
+            })
+            extracted.append((path, document, entry))
+        except Exception as exc:
+            log("document skipped", source=path.name, error=repr(exc))
+            skipped.append(path.name)
+    if not extracted:
+        raise SystemExit("every document failed extraction; keeping the old index")
+
+    verification_vectors = embed(
+        ["\n".join(page.text for page in document.pages)[:8000]
+         for _, document, _ in extracted], settings,
+    )
+    run_id = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
+    results = verify_documents(extracted, verification_vectors, Path(settings.quarantine_dir),
+                               Path(settings.archive_dir))
+    report = Path(settings.results_dir) / f"verification-{run_id}.json"
+    write_report(results, report, run_id)
+    accepted = [item for item, result in zip(extracted, results) if result.passed]
+    log("verification complete", report=str(report), total=len(results),
+        passed=len(accepted), failed=len(results) - len(accepted))
+
+    all_chunks = []
+    original_words = 0
+    ocr_pages = 0
+    for (path, document, _metadata) in accepted:
+        pieces = chunk(document, settings.chunk_size, settings.chunk_overlap,
+                       mode=settings.chunk_mode)
+        original_words += sum(count_words(page.text) for page in document.pages)
+        ocr_pages += sum(page.ocr for page in document.pages)
+        all_chunks.extend(pieces)
+        log("chunked", source=path.name, chunks=len(pieces),
+            doc_version=document.doc_version, superseded=document.superseded)
+    if not all_chunks:
+        raise SystemExit("verification rejected every document; keeping the old index")
+    stored_words = sum(count_words(item.text) for item in all_chunks)
+    summary = {
+        "documents": len(accepted), "skipped": skipped, "quarantined_or_archived": len(results) - len(accepted),
+        "ocr_pages": ocr_pages, "chunks": len(all_chunks), "original_words": original_words,
+        "stored_words": stored_words,
+        "storage_amplification": round(stored_words / max(original_words, 1), 3),
+    }
     log("chunking summary", **summary)
-    vectors = embed([c.text for c in all_chunks], settings)
-    log("embedded", vectors=len(vectors), dimension=len(vectors[0]), model=settings.embed_model)
-    count = store(all_chunks, vectors, settings)
+    chunks_by_document = {
+        source: [chunk for chunk in all_chunks if chunk.source == source]
+        for source in sorted({chunk.source for chunk in all_chunks})
+    }
+    hashes = {result.source: result.content_hash for result in results if result.passed}
+    incremental = update_incrementally(
+        chunks_by_document, hashes, settings,
+        Path(settings.manifest_path), embed,
+    )
+    log("incremental update", **incremental, model=settings.embed_model)
+    count = int(incremental["collection_count"])
     expired = invalidate_cache(settings)
     log("cache invalidated", keys_removed=expired)
     return count

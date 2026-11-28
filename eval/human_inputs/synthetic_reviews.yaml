@@ -1,0 +1,60 @@
+# Human-only decisions. At least eight distinct synthetic IDs must be reviewed by the group.
+# Shaheer is assigned syn01-syn04. Use verdict: accept, edit, or reject.
+reviews:
+  - id: syn01
+    verdict: accept
+    edited_question: ""
+    reviewer: "Muhammad Shaheer Shoaib "
+    reviewed_on: "2026-11-27"
+    note: "Handbook 2026 clause 5.4, page 24: minimum CGPA 2.00. Question, answer and page match."
+  - id: syn02
+    verdict: edit
+    edited_question: "What attendance percentage does clause 1.21 require students to maintain?"
+    reviewer: "Muhammad Shaheer Shoaib "
+    reviewed_on: "2026-11-27"
+    note: "Handbook 2026 clause 1.21, page 10: 100% required. Question narrowed to the requirement only."
+  - id: syn03
+    verdict: edit
+    edited_question: "According to the August 2023 undergraduate rules, what minimum CGPA is required for graduation?"
+    reviewer: "Muhammad Shaheer Shoaib "
+    reviewed_on: "2026-11-27"
+    note: "2023 rules PDF, page 8, clause 1.26: minimum CGPA 2.00. Question names the 2023 version."
+  - id: syn04
+    verdict: edit
+    edited_question: "Where do students submit service requests, and within how long does the office acknowledge a complete request?"
+    reviewer: "Muhammad Shaheer Shoaib "
+    reviewed_on: "2026-11-27"
+    note: "01-services-policy.md: portal; two working days. Cite section heading, as the file is Markdown."
+  - id: syn05
+    verdict: accept
+    edited_question: ""
+    reviewer: "Syed Ayaan Haider"
+    reviewed_on: "2026-11-27"
+    note: "The trace fields are listed correctly in the assignment."
+  - id: syn06
+    verdict: accept
+    edited_question: ""
+    reviewer: "Syed Ayaan Haider"
+    reviewed_on: "2026-11-27"
+    note: "The 85 percent coverage example is correctly cited."
+  - id: syn07
+    verdict: edit
+    edited_question: "What names and roll numbers must appear on the report's first page?"
+    reviewer: "Syed Ayaan Haider"
+    reviewed_on: "2026-11-27"
+    note: "The wording was narrowed to the explicit first-page requirement."
+  - id: syn08
+    verdict: accept
+    edited_question: ""
+    reviewer: "Syed Ayaan Haider"
+    reviewed_on: "2026-11-27"
+    note: "The assignment requires at least eight hand-written questions."
+
+# Entry schema (replace the blank values above):
+# - id: syn01
+#   verdict: accept
+#   edited_question: ""  # required only for edit
+#   reviewer: "real name"
+#   reviewed_on: "YYYY-MM-DD"
+#   note: "brief reason"
+

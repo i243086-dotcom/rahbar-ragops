@@ -1,0 +1,134 @@
+{
+  "schema_version": 1,
+  "phase": 4,
+  "generated_at": "2026-11-28T14:41:42.146251+00:00",
+  "run_context": {
+    "api": "http://api:8000",
+    "embed_model": "nomic-embed-text",
+    "temperature_requirement": 0,
+    "fixed_seed": 4032,
+    "questions": 31,
+    "distribution": {
+      "answerable": 19,
+      "abstain": 7,
+      "hard": 5
+    },
+    "noise": "one deterministic character deletion in a word of length >= 6"
+  },
+  "runs": [
+    {
+      "run": 1,
+      "seed": 4032,
+      "embedding": {
+        "model": "nomic-embed-text",
+        "pairs": 15,
+        "mean_paraphrase_cosine": 0.766891,
+        "mean_unrelated_cosine": 0.440954,
+        "cosine_gap": 0.325937,
+        "embedding_ms_per_text": 79.658121,
+        "determinism_largest_absolute_difference": 0.0
+      },
+      "retrieval": {
+        "recall_at_3": 0.25,
+        "recall_at_5": 0.25,
+        "mrr": 0.25,
+        "ndcg_at_5": 0.25
+      },
+      "retrieval_noise": {
+        "recall_at_3": 0.25,
+        "recall_at_5": 0.25,
+        "mrr": 0.222222,
+        "ndcg_at_5": 0.229167
+      },
+      "retrieval_noise_delta": {
+        "mrr": -0.027778,
+        "ndcg_at_5": -0.020833,
+        "recall_at_3": 0.0,
+        "recall_at_5": 0.0
+      },
+      "answers": {
+        "citation_validity": 1.0,
+        "citations_checked": 13,
+        "abstention_correctness": 1.0,
+        "faithfulness_citation_proxy": 0.354839,
+        "latency_p50_ms": 14420.8756,
+        "latency_p95_ms": 21826.1397
+      }
+    },
+    {
+      "run": 2,
+      "seed": 4032,
+      "embedding": {
+        "model": "nomic-embed-text",
+        "pairs": 15,
+        "mean_paraphrase_cosine": 0.766891,
+        "mean_unrelated_cosine": 0.440954,
+        "cosine_gap": 0.325937,
+        "embedding_ms_per_text": 48.040447,
+        "determinism_largest_absolute_difference": 0.0
+      },
+      "retrieval": {
+        "recall_at_3": 0.25,
+        "recall_at_5": 0.25,
+        "mrr": 0.25,
+        "ndcg_at_5": 0.25
+      },
+      "retrieval_noise": {
+        "recall_at_3": 0.25,
+        "recall_at_5": 0.25,
+        "mrr": 0.222222,
+        "ndcg_at_5": 0.229167
+      },
+      "retrieval_noise_delta": {
+        "mrr": -0.027778,
+        "ndcg_at_5": -0.020833,
+        "recall_at_3": 0.0,
+        "recall_at_5": 0.0
+      },
+      "answers": {
+        "citation_validity": 1.0,
+        "citations_checked": 13,
+        "abstention_correctness": 1.0,
+        "faithfulness_citation_proxy": 0.354839,
+        "latency_p50_ms": 10802.9462,
+        "latency_p95_ms": 17912.7681
+      }
+    }
+  ],
+  "stochasticity_delta_run2_minus_run1": {
+    "embedding": {
+      "cosine_gap": 0.0,
+      "determinism_largest_absolute_difference": 0.0,
+      "embedding_ms_per_text": -31.617674,
+      "mean_paraphrase_cosine": 0.0,
+      "mean_unrelated_cosine": 0.0,
+      "pairs": 0.0
+    },
+    "retrieval": {
+      "mrr": 0.0,
+      "ndcg_at_5": 0.0,
+      "recall_at_3": 0.0,
+      "recall_at_5": 0.0
+    },
+    "retrieval_noise": {
+      "mrr": 0.0,
+      "ndcg_at_5": 0.0,
+      "recall_at_3": 0.0,
+      "recall_at_5": 0.0
+    },
+    "answers": {
+      "abstention_correctness": 0.0,
+      "citation_validity": 0.0,
+      "citations_checked": 0.0,
+      "faithfulness_citation_proxy": 0.0,
+      "latency_p50_ms": -3617.9294,
+      "latency_p95_ms": -3913.3716
+    }
+  },
+  "human_faithfulness": null,
+  "limitations": [
+    "Faithfulness is provisional until at least eight real human labels are supplied.",
+    "The automatic faithfulness value is explicitly a citation-grounding proxy, not an LLM judge."
+  ],
+  "result_file": "phase4_offline_evaluation_20261128T144142Z.json"
+}

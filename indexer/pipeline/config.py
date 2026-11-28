@@ -32,6 +32,10 @@ class IndexerSettings:
     skip_ocr: bool = False          # stage A: index scanned pages without OCR
     chunk_mode: str = "structure"   # stage B: "structure" (shipped) or "fixed"
     embed_batch: int = 16
+    quarantine_dir: str = "/data-lake/quarantine"
+    archive_dir: str = "/data-lake/archive"
+    results_dir: str = "/results"
+    manifest_path: str = "/results/index-manifest.json"
 
 
 def get_settings() -> IndexerSettings:
@@ -39,7 +43,7 @@ def get_settings() -> IndexerSettings:
         embed_model=os.environ.get("EMBED_MODEL", "nomic-embed-text"),
         chroma_host=os.environ.get("CHROMA_HOST", "chroma"),
         chroma_port=int(os.environ.get("CHROMA_PORT", 8000)),
-        collection=os.environ.get("CHROMA_COLLECTION", "rahbar"),
+        collection=os.environ.get("COLLECTION_NAME", os.environ.get("CHROMA_COLLECTION", "rahbar")),
         corpus_dir=os.environ.get("CORPUS_DIR", "/corpus"),
         chunk_size=int(os.environ.get("CHUNK_SIZE", 400)),
         chunk_overlap=int(os.environ.get("CHUNK_OVERLAP", 50)),
@@ -49,4 +53,8 @@ def get_settings() -> IndexerSettings:
         skip_ocr=_bool("SKIP_OCR"),
         chunk_mode=os.environ.get("CHUNK_MODE", "structure"),
         embed_batch=int(os.environ.get("EMBED_BATCH", 16)),
+        quarantine_dir=os.environ.get("QUARANTINE_DIR", "/data-lake/quarantine"),
+        archive_dir=os.environ.get("ARCHIVE_DIR", "/data-lake/archive"),
+        results_dir=os.environ.get("RESULTS_DIR", "/results"),
+        manifest_path=os.environ.get("MANIFEST_PATH", "/results/index-manifest.json"),
     )

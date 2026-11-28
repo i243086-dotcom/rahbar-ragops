@@ -35,6 +35,7 @@ re-index. The API also tags entries with `index_id` and ignores entries from ano
 | `CACHE_THRESHOLD` | api | from `docs/PIPELINE.md` | Cosine similarity for a cache hit |
 | `CACHE_TTL_SECONDS`, `CACHE_MAX_ENTRIES` | api | `21600`, `200` | |
 | `TEMPERATURE` | api | `0.2` | Facts and JSON belong at 0 to 0.3 |
+| `LLM_SEED` | api | `4032` | Fixed Ollama decoding seed for repeatable evaluation |
 | `LLM_PROVIDER`, `LLM_MODEL` | api | `ollama-host`, `llama3.2:3b` | |
 | `LLM_NUM_CTX` | api | `8192` | Ollama truncates silently when the prompt overflows its window |
 | `RETRIEVER` | api | `chroma` | `stub` only while the cluster runs without an index |

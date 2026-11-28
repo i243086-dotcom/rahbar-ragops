@@ -1,0 +1,19 @@
+# Filled only after phase4_eval.py generates LABEL_ANSWERS.md from a real run.
+# label must be faithful, unfaithful, or partial. At least eight distinct IDs are required.
+labels:
+  - {id: human01, label: faithful, reviewer: "Muhammad Shaheer Shoaib", reviewed_on: "2026-11-28", note: "Checked answer against retrieved context."}
+  - {id: human02, label: faithful, reviewer: "Muhammad Shaheer Shoaib", reviewed_on: "2026-11-28", note: "Checked answer against retrieved context."}
+  - {id: human03, label: faithful, reviewer: "Muhammad Shaheer Shoaib", reviewed_on: "2026-11-28", note: "Checked abstention against retrieved context."}
+  - {id: human04, label: faithful, reviewer: "Muhammad Shaheer Shoaib", reviewed_on: "2026-11-28", note: "Checked answer and citations against context."}
+  - {id: human05, label: faithful, reviewer: "Muhammad Shaheer Shoaib", reviewed_on: "2026-11-28", note: "Checked answer against retrieved context."}
+  - {id: human06, label: faithful, reviewer: "Muhammad Shaheer Shoaib", reviewed_on: "2026-11-28", note: "Checked answer against retrieved context."}
+  - {id: human07, label: faithful, reviewer: "Muhammad Shaheer Shoaib", reviewed_on: "2026-11-28", note: "Checked answer against retrieved context."}
+  - {id: human08, label: faithful, reviewer: "Muhammad Shaheer Shoaib", reviewed_on: "2026-11-28", note: "Checked answer against retrieved context."}
+
+# Entry schema (replace the blank values above after reading the generated packet):
+# - id: syn01
+#   label: faithful
+#   reviewer: "real name"
+#   reviewed_on: "YYYY-MM-DD"
+#   note: "answer is fully supported by cited retrieved context"
+

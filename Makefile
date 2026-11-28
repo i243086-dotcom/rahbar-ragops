@@ -17,7 +17,7 @@ INGRESS_IP ?= $(shell minikube -p $(PROFILE) ip 2>/dev/null)
 HOST ?= rahbar.local
 
 .DEFAULT_GOAL := help
-.PHONY: help install test lint dev cluster images apply secret index ask fetch eval eval-fixtures check
+.PHONY: help install test lint dev cluster images apply secret index ask fetch eval eval-fixtures check phase4-inputs phase4-eval phase4-summary eval-image phase5-gate
 
 help: ## list the targets
 	@grep -E '^[a-z-]+:.*## ' $(MAKEFILE_LIST) | awk -F':.*## ' '{printf "  make %-14s %s\n", $$1, $$2}'
@@ -30,6 +30,7 @@ install: ## create .venv and install the api, indexer and tool dependencies
 test: ## run the api and indexer tests (stubs only: no cluster, no model, no network)
 	cd api && $(BIN)/pytest -q
 	cd indexer && $(BIN)/pytest -q
+	$(BIN)/pytest -q eval/tests
 
 lint: ## ruff and mypy over everything in Python
 	$(BIN)/ruff check api indexer eval corpus
@@ -77,6 +78,22 @@ eval: ## score eval/golden.yaml through the Ingress and apply the CI gate
 
 eval-fixtures: ## score the CI fixture golden set against a local `make dev`
 	$(BIN)/python eval/run_eval.py --api "http://$(INGRESS_IP)" --host "$(HOST)" --golden eval/fixtures/golden.fixture.yaml --baseline eval/fixtures/baseline.fixture.json --out /tmp/rahbar-fixture-results.json
+
+phase4-inputs: ## validate human questions/reviews and assemble eval/golden.jsonl
+	$(BIN)/python eval/phase4_inputs.py
+
+phase4-eval: ## run the complete Part B suite twice (requires API and host Ollama)
+	$(BIN)/python eval/phase4_eval.py --api "http://$(INGRESS_IP)" --host "$(HOST)" --ollama "$${OLLAMA_URL:?export OLLAMA_URL first}"
+
+phase4-summary: ## print the latest three-level Part B result table
+	$(BIN)/python scripts/phase4_summary.py
+
+eval-image: ## build and load the Phase 4 evaluation Job image
+	docker build -f eval/Dockerfile -t rahbar-eval:$(TAG) .
+	minikube -p $(PROFILE) image load rahbar-eval:$(TAG)
+
+phase5-gate: ## apply the Phase 5 gate to measured baseline/candidate JSON files
+	$(BIN)/python eval/phase5_gate.py --baseline $(BASELINE_JSON) --candidate $(CANDIDATE_JSON)
 
 check: ## run the submission checker
 	$(PY) scripts/check_submission.py

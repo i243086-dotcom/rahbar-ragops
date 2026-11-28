@@ -7,6 +7,7 @@ real model. It is deterministic: the same input always gives the same output.
 from __future__ import annotations
 
 from ...schemas import Answer, Citation, Passage
+from ...services.guard import neutralise
 
 
 class StubProvider:
@@ -24,10 +25,11 @@ class StubProvider:
                 confidence="low",
             )
         top = passages[0]
+        safe_text, _ = neutralise(top.text)
         return Answer(
             reasoning="stub: cites the first retrieved passage",
             answer=f"(stub) A model would answer here from {len(passages)} passages. "
-            f"The first one says: {top.text}",
+            f"The first one says: {safe_text}",
             citations=[Citation(source=top.source, section=top.section, page=top.page)],
             answered_from_context=True,
             confidence="low",
