@@ -63,6 +63,16 @@ if [[ "$corpus" != "-" ]]; then
   kubectl -n rahbar delete pod corpus-loader --wait=true || true
 fi
 
+if [[ -n "${RAHBAR_DIAGNOSTICS_DIR:-}" ]]; then
+  python - "$scratch/job.yaml" <<'PY'
+import pathlib, sys, yaml
+p = pathlib.Path(sys.argv[1])
+doc = yaml.safe_load(p.read_text())
+doc.setdefault("spec", {})["backoffLimit"] = 0
+p.write_text(yaml.safe_dump(doc))
+PY
+fi
+
 kubectl apply -f "$scratch/stack.yaml"
 kubectl -n rahbar rollout status statefulset/chroma --timeout=240s
 kubectl -n rahbar rollout status deployment/redis --timeout=180s
