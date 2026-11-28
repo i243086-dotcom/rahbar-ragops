@@ -1,8 +1,9 @@
 FROM python:3.12-slim-bookworm
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 TMPDIR=/tmp
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends tesseract-ocr poppler-utils libzstd1 \
-    && apt-get install -y --no-install-recommends --only-upgrade libzstd1 \
+    && apt-get dist-upgrade -y \
+    && apt-get install -y --no-install-recommends tesseract-ocr poppler-utils libzstd1 libpam0g \
+    && apt-get install -y --no-install-recommends --only-upgrade libzstd1 libpam0g \
     && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY requirements.txt .
