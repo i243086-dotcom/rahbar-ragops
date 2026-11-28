@@ -47,7 +47,22 @@ def update_incrementally(
         "chunk_size": settings.chunk_size, "chunk_overlap": settings.chunk_overlap,
         "chunk_count": sum(len(items) for items in chunks_by_document.values()),
     }
-    collection = db.get_or_create_collection(settings.collection, metadata=metadata)
+    # Chroma can answer its HTTP health endpoint before the collection
+    # endpoint is ready during a fresh StatefulSet start. Retry transient
+    # 404/connection failures so the ingestion Job does not lose its only
+    # attempt to a startup race.
+    last_error: Exception | None = None
+    for attempt in range(6):
+        try:
+            collection = db.get_or_create_collection(settings.collection, metadata=metadata)
+            break
+        except Exception as exc:  # chromadb-client exposes several HTTP error types
+            last_error = exc
+            if attempt == 5:
+                raise
+            time.sleep(2 ** attempt)
+    else:
+        raise RuntimeError(f"could not create Chroma collection: {last_error!r}")
     for source in changed + deleted:
         old_ids = old_documents.get(source, {}).get("chunk_ids", [])
         if old_ids:
