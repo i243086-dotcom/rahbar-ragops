@@ -70,6 +70,19 @@ kubectl -n rahbar create -f "$scratch/job.yaml"
 job=$(cat "$scratch/job-name")
 if ! kubectl -n rahbar wait --for=condition=complete "job/$job" --timeout="${INDEX_TIMEOUT:-20m}"; then
   kubectl -n rahbar describe "job/$job"
+  # Preserve the failed pod's diagnostics before the job cleanup removes it.
+  # CI copies this directory into the diagnostics artifact on failure.
+  diag_dir=${RAHBAR_DIAGNOSTICS_DIR:-}
+  if [[ -n "$diag_dir" ]]; then
+    mkdir -p "$diag_dir"
+    kubectl -n rahbar describe "job/$job" > "$diag_dir/${job}-describe.txt" 2>&1 || true
+    for pod in $(kubectl -n rahbar get pods -l "job-name=$job" -o name 2>/dev/null || true); do
+      base=$(basename "$pod")
+      kubectl -n rahbar describe "$pod" > "$diag_dir/${base}-describe.txt" 2>&1 || true
+      kubectl -n rahbar logs "$pod" --all-containers=true > "$diag_dir/${base}.log" 2>&1 || true
+      kubectl -n rahbar logs "$pod" --all-containers=true --previous > "$diag_dir/${base}-previous.log" 2>&1 || true
+    done
+  fi
   kubectl -n rahbar logs "job/$job" --all-containers=true || true
   exit 1
 fi
