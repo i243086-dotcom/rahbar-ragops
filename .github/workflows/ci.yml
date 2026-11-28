@@ -88,8 +88,18 @@ jobs:
         with: {name: fixture-platform-evidence, path: /tmp/rahbar-platform-evidence}
       - if: failure()
         run: |
+          mkdir -p /tmp/rahbar-ci-diagnostics
           kubectl get pods -A
-          kubectl -n rahbar describe pod chroma-0 || true
-          kubectl -n rahbar logs chroma-0 --previous || kubectl -n rahbar logs chroma-0 || true
-          kubectl -n rahbar logs -l app=indexer --tail=60 || true
-          kubectl -n rahbar logs -l app=api --tail=25 || true
+          kubectl -n rahbar get jobs,pods -o wide | tee /tmp/rahbar-ci-diagnostics/workloads.txt
+          kubectl -n rahbar describe job/indexer > /tmp/rahbar-ci-diagnostics/indexer-job.txt 2>&1 || true
+          for pod in $(kubectl -n rahbar get pods -l app=indexer -o name); do
+            kubectl -n rahbar describe "$pod" > "/tmp/rahbar-ci-diagnostics/$(basename "$pod")-describe.txt" 2>&1 || true
+            kubectl -n rahbar logs "$pod" --all-containers=true > "/tmp/rahbar-ci-diagnostics/$(basename "$pod").log" 2>&1 || true
+            kubectl -n rahbar logs "$pod" --all-containers=true --previous > "/tmp/rahbar-ci-diagnostics/$(basename "$pod")-previous.log" 2>&1 || true
+          done
+          kubectl -n rahbar describe pod chroma-0 > /tmp/rahbar-ci-diagnostics/chroma-describe.txt 2>&1 || true
+          kubectl -n rahbar logs chroma-0 --previous > /tmp/rahbar-ci-diagnostics/chroma-previous.log 2>&1 || kubectl -n rahbar logs chroma-0 > /tmp/rahbar-ci-diagnostics/chroma.log 2>&1 || true
+          kubectl -n rahbar logs -l app=api --all-containers=true > /tmp/rahbar-ci-diagnostics/api.log 2>&1 || true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: ci-kubernetes-diagnostics, path: /tmp/rahbar-ci-diagnostics}
