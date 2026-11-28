@@ -8,6 +8,7 @@ placeholder text with tables and figures populated only from eval/results/*.json
 from __future__ import annotations
 
 import json
+import html
 from pathlib import Path
 
 from reportlab.lib.enums import TA_CENTER
@@ -54,6 +55,9 @@ def build() -> None:
     title = ParagraphStyle("PageTitle", parent=styles["Title"], fontSize=19, leading=23,
                            alignment=TA_CENTER, spaceAfter=10 * mm)
     body = ParagraphStyle("Body", parent=styles["BodyText"], fontSize=10.25, leading=14)
+    table_cell = ParagraphStyle(
+        "TableCell", parent=styles["BodyText"], fontSize=7, leading=9, splitLongWords=True
+    )
     doc = SimpleDocTemplate(str(OUT), pagesize=A4, leftMargin=16 * mm, rightMargin=16 * mm,
                             topMargin=15 * mm, bottomMargin=15 * mm,
                             title="RAHBAR RAGOps Assignment 03")
@@ -70,7 +74,11 @@ def build() -> None:
             story.extend([Spacer(1, 8 * mm), Paragraph("Names and roll numbers: PENDING OWNER INPUT", body),
                           Paragraph("Repository: github.com/i243086-dotcom/rahbar-ragops", body)])
         if index == 3:
-            table = Table(inventory, colWidths=[65 * mm, 105 * mm])
+            wrapped_inventory = [
+                [Paragraph(html.escape(str(cell)), table_cell) for cell in row]
+                for row in inventory
+            ]
+            table = Table(wrapped_inventory, colWidths=[62 * mm, 108 * mm])
             table.setStyle(TableStyle([
                 ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#DCE6F1")),
                 ("GRID", (0, 0), (-1, -1), 0.4, colors.grey),

@@ -87,7 +87,8 @@ def answer_question(
     trace = TraceRecord(
         trace_id=rid, user_query=question, embedding_model=settings.embed_model,
         embedding_version=settings.embed_version, collection_name=settings.collection,
-        model=settings.llm_model, model_parameters={"temperature": settings.temperature},
+        model=settings.llm_model,
+        model_parameters={"temperature": settings.temperature, "seed": settings.llm_seed},
         filters={"superseded": False},
         guardrail_actions=["query_injection_flagged"] if flagged else [],
     )

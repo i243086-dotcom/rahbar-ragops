@@ -4,6 +4,7 @@ namespace: rahbar
 resources:
   - namespace.yaml
   - configmap.yaml
+  - phase5-gate-configmap.yaml
   - serviceaccounts.yaml
   - api.yaml
   - ui.yaml

@@ -21,6 +21,17 @@ The API is a read-only Chroma client. Only the indexer Job/CronJob has ingestion
 responsibility. Persistent claims retain Chroma data, Batch A/B, quarantine, archive, evaluation
 results, and traces. API replicas emit traces to stdout and `/traces/<pod>.jsonl`.
 
+The Phase 4 evaluation is a standalone Job in `k8s/jobs/eval-phase4.yaml`. Its dedicated service
+account has no Kubernetes API token. NetworkPolicy permits only the API Service, DNS, and the
+pinned Ollama host; results and trace context come from the existing persistent claims. Build and
+load `rahbar-eval:dev` with `make eval-image` after the validated golden set and human labels have
+been added, then use `kubectl -n rahbar create -f k8s/jobs/eval-phase4.yaml`.
+
+Run `bash scripts/phase4_prepare_cluster.sh` before the evaluation. It patches only the three evaluation
+settings (temperature zero, seed 4032, and cache disabled), preserving the machine-specific Ollama
+endpoint and NetworkPolicy installed by `scripts/deploy.sh`. Run `bash scripts/phase4_restore_cluster.sh`
+afterwards to restore normal cache and temperature settings.
+
 ## Inspect and prove persistence
 
 ```bash

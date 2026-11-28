@@ -40,11 +40,18 @@ chunk and left a 4-chunk collection. Archive restoration is an explicit, SHA-256
 
 ## Page 5 — Part B
 
-Module, component, end-to-end, noise, stochasticity, and judge-agreement results: pending Phase 4 result JSON.
+The executable Phase 4 suite is implemented in `eval/phase4_eval.py`. The measured run used 15
+paraphrase/unrelated pairs and two runs with seed 4032. Both runs measured recall@5 0.25,
+citation validity 1.0, abstention correctness 1.0, and p95 latency 17,912.8 ms on run 2.
+The result is `eval/results/phase4_offline_evaluation_20261128T144142Z.json`. Eight human labels
+were recorded in `eval/human_inputs/answer_labels.yaml`; a scoring rerun is still required to
+populate human faithfulness in the final result.
 
 ## Page 6 — Parts C and F
 
-Change experiment, gate, release decision, rollout/rollback, and resources: pending Phases 5–6 result JSON.
+Phase 5 now has a standalone threshold-driven gate in `eval/phase5_gate.py`; thresholds are also
+committed as `k8s/base/phase5-gate-configmap.yaml`. The C1/C2 screenshots and release decision
+remain pending real baseline/candidate Phase 4 result files.
 
 ## Page 7 — Parts D and E
 

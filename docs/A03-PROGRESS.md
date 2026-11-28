@@ -12,8 +12,8 @@ The working submission deadline is **2026-11-28 23:59 Asia/Karachi**, based on t
 | 1 Platform baseline | Complete; PR pending | Deployment/StatefulSet/Services, nine bound PVCs, CronJob, trace sink, and pod-replacement persistence proof |
 | 2 Verification and incremental update | Complete; PR pending | Real Batch B verification, unchanged/changed/deleted lifecycle jobs, archive/restore helper |
 | 3 Trace and guardrail | Complete; PR pending | Full JSONL records, replay tool, summary metrics, injected-document trace |
-| 4 Three-level offline testing | Not started | Human sign-offs required |
-| 5 Change experiment and gate | Not started | — |
+| 4 Three-level offline testing | Implementation complete; human checkpoint and real runs pending | 25-question assembler, 15-pair embedding test, retrieval/noise/answer suite, two-run comparison, Job and B1 script added; human wording/reviews/labels remain required |
+| 5 Change experiment and gate | Gate implementation complete; measured candidate pending | `eval/phase5_gate.py`, threshold ConfigMap, C1/C2 scripts, and unit tests added; real Phase 4 baseline/candidate inputs still required |
 | 6 Controlled release and resources | Not started | — |
 | 7 Drift and coverage | Not started | Human live-query review required |
 | 8 Trace metrics and hardening | Not started | — |
@@ -105,5 +105,6 @@ Only real pipeline measurements go here. Phase 0 establishes deployment and inge
 
 1. Obtain teammate approval for the Phase 0 and Phase 1 pull requests.
 2. Teammate: accept the repository invitation and contribute review/commits that they can explain at the demo.
-3. Complete Phases 1–9, measured runs, human-authored/reviewed evaluation items, screenshots, and contribution confirmation.
+3. Phase 4 measurements completed in `eval/results/phase4_offline_evaluation_20261128T144142Z.json`; eight human labels recorded. Rerun scoring to populate human faithfulness and complete the Phase 5 gate.
+4. Complete remaining required screenshots and contribution confirmation.
 

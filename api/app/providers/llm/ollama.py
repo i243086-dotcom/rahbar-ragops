@@ -35,7 +35,11 @@ class OllamaProvider:
             # Low temperature: facts and JSON. num_ctx matters: Ollama's default window is
             # smaller than five 400-word chunks, and it truncates the START of the prompt
             # (the rules) without any error.
-            "options": {"temperature": s.temperature, "num_ctx": s.llm_num_ctx},
+            "options": {
+                "temperature": s.temperature,
+                "num_ctx": s.llm_num_ctx,
+                "seed": s.llm_seed,
+            },
         }
         try:
             r = self.client.post(f"{s.ollama_url.rstrip('/')}/api/chat", json=payload)

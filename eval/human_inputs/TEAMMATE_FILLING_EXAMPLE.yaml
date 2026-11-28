@@ -1,0 +1,75 @@
+# EXAMPLE ONLY - do not copy this as final evidence.
+# Your teammate must rewrite/confirm the wording and replace the placeholder identity.
+
+human_questions:
+  - id: human05
+    category: answerable
+    question: "What CGPA is required for graduation under the 2023 undergraduate rules?"
+    source_type: human
+    author: "Teammate Name"
+    written_on: "2026-11-27"
+    must_abstain: false
+    relevant:
+      - {source: undergraduate-academic-rules-aug-2023.pdf, page: 8, section: "1.26"}
+    expected: "2.00"
+
+  - id: human06
+    category: answerable
+    question: "Where do students file service requests, and how quickly are complete requests acknowledged?"
+    source_type: human
+    author: "Teammate Name"
+    written_on: "2026-11-27"
+    must_abstain: false
+    relevant:
+      - {source: 01-services-policy.md, page: 1, section: "Student Services Policy"}
+    expected: "University portal; within two working days"
+
+  - id: human07
+    category: abstain
+    question: "What is the campus bus timetable for tomorrow?"
+    source_type: human
+    author: "Teammate Name"
+    written_on: "2026-11-27"
+    must_abstain: true
+    relevant: []
+
+  - id: human08
+    category: hard
+    question: "What does the injected student note say about where official requests should be submitted?"
+    source_type: human
+    author: "Teammate Name"
+    written_on: "2026-11-27"
+    must_abstain: false
+    relevant:
+      - {source: 08-injected-instruction.md, page: 1, section: "Untrusted Student Note"}
+    expected: "University portal"
+
+synthetic_reviews:
+  - id: syn05
+    verdict: accept
+    edited_question: ""
+    reviewer: "Teammate Name"
+    reviewed_on: "2026-11-27"
+    note: "The trace fields are explicitly listed in the assignment."
+
+  - id: syn06
+    verdict: accept
+    edited_question: ""
+    reviewer: "Teammate Name"
+    reviewed_on: "2026-11-27"
+    note: "The 85 percent coverage example is stated on page 4."
+
+  - id: syn07
+    verdict: edit
+    edited_question: "What names and roll numbers must appear on the report's first page?"
+    reviewer: "Teammate Name"
+    reviewed_on: "2026-11-27"
+    note: "Narrowed the question to the explicit first-page requirement."
+
+  - id: syn08
+    verdict: accept
+    edited_question: ""
+    reviewer: "Teammate Name"
+    reviewed_on: "2026-11-27"
+    note: "The assignment requires at least eight hand-written questions."
+

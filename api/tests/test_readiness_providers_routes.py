@@ -122,7 +122,7 @@ def test_ollama_sends_the_schema_low_temperature_and_a_big_context() -> None:
     body = json.loads(seen[0].content)
     assert answer.answered_from_context and body["stream"] is False
     assert body["format"]["properties"].keys() >= {"answer", "citations", "answered_from_context"}
-    assert body["options"] == {"temperature": 0.2, "num_ctx": 8192}
+    assert body["options"] == {"temperature": 0.2, "num_ctx": 8192, "seed": 4032}
 
 
 def test_ollama_prose_reply_raises_invalid_model_output() -> None:

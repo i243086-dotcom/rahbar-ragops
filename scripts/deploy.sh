@@ -4,7 +4,12 @@ set -euo pipefail
 overlay=${1:?pass a Kustomize overlay}
 corpus=${2:--}
 loader_image=${3:-rahbar-indexer:dev}
-scratch=$(mktemp -d)
+# Keep generated manifests in the repository's ignored scratch area.  On
+# Windows/WSL, /tmp can be cleaned or translated unexpectedly while the
+# corpus-loader pod is being deleted, which used to remove stack.yaml before
+# it was applied.
+mkdir -p .tools
+scratch=$(mktemp -d "$PWD/.tools/rahbar-deploy.XXXXXX")
 loader_started=false
 cleanup() {
   if $loader_started; then
@@ -51,8 +56,11 @@ if [[ "$corpus" != "-" ]]; then
   loader_started=true
   kubectl -n rahbar wait --for=condition=Ready pod/corpus-loader --timeout=180s
   kubectl -n rahbar cp "$corpus/." corpus-loader:/corpus
-  kubectl -n rahbar delete pod corpus-loader --wait=true
+  # A successful deletion can still return non-zero when the pod disappears
+  # during the wait.  Clear the cleanup flag first so set -e cannot remove
+  # the generated manifests before they are applied.
   loader_started=false
+  kubectl -n rahbar delete pod corpus-loader --wait=true || true
 fi
 
 kubectl apply -f "$scratch/stack.yaml"

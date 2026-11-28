@@ -21,5 +21,14 @@ review responsibilities are in [SHAHEER-REMAINING-PHASES.md](SHAHEER-REMAINING-P
 - Make one small independent Batch B or README correction (5 minutes).
 - Review each phase PR from your account (2–5 minutes each).
 
-Exact files and commands will be added at the relevant human checkpoint. A task is not marked complete until the teammate's commit/review is visible on GitHub.
+Phase 4 files are now ready:
+
+1. Write at least four entries in `eval/human_inputs/human_questions.yaml` using only your own
+   wording and the verified prompts in `WRITE_QUESTIONS.md`.
+2. Review `syn01` through `syn04` and enter genuine decisions in `synthetic_reviews.yaml`.
+3. After a real evaluation, label at least four rows in `answer_labels.yaml` using the generated
+   `LABEL_ANSWERS.md` context packet.
+4. Run `python eval/phase4_inputs.py` and the Phase 4 unit tests before committing.
+
+A task is not marked complete until the teammate's commit/review is visible on GitHub.
 

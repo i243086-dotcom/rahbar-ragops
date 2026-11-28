@@ -100,6 +100,36 @@ scripts/shots/A2.sh <completed-unchanged-job>
 changed, and deleted) plus their persistent verification report and manifest. The checked-in
 `eval/results/phase2_data_lifecycle.json` is the run from this repository's minikube cluster.
 
+### Part B — three-level offline evaluation
+
+Human-authored questions, synthetic-review decisions, and faithfulness labels are deliberately
+kept in `eval/human_inputs/`. They must be entered by the named people; the validators refuse to
+create a final golden set or complete result when those sign-offs are missing.
+
+```bash
+# 1. Fill the human YAML files, then assemble the 25+ question JSONL.
+make phase4-inputs
+
+# 2. Evaluation uses temperature zero, seed 4032, and disables cache between repeated runs.
+bash scripts/phase4_prepare_cluster.sh
+
+# 3. Local runner: 15 embedding pairs, clean/noisy retrieval, answers, twice with seed 4032.
+OLLAMA_URL=http://127.0.0.1:11434 make phase4-eval INGRESS_IP=127.0.0.1:8080
+
+# 4. Label at least 8 real rows from eval/human_inputs/LABEL_ANSWERS.md, then rerun step 3.
+make phase4-summary
+bash scripts/shots/B1.sh
+bash scripts/phase4_restore_cluster.sh
+
+# Kubernetes Job form used for the demo (build only after golden.jsonl and labels exist).
+make eval-image
+kubectl -n rahbar create -f k8s/jobs/eval-phase4.yaml
+```
+
+Each completed run writes `eval/results/phase4_offline_evaluation_<UTC>.json`. The runner exits
+with status 2 after generating the label packet when human labels are still missing, and exits 0
+only when the result includes at least eight valid human faithfulness labels.
+
 ### Part D — traces and guardrails
 
 ```bash

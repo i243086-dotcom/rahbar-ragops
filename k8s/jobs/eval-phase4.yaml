@@ -1,0 +1,47 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  generateName: phase4-evaluation-
+  namespace: rahbar
+  labels: {app: evaluation, phase: "4"}
+spec:
+  backoffLimit: 0
+  ttlSecondsAfterFinished: 86400
+  template:
+    metadata:
+      labels: {app: evaluation, phase: "4"}
+    spec:
+      serviceAccountName: evaluation
+      automountServiceAccountToken: false
+      restartPolicy: Never
+      containers:
+        - name: evaluation
+          image: rahbar-eval:dev
+          imagePullPolicy: IfNotPresent
+          args:
+            - --api
+            - http://api:8000
+            - --ollama
+            - http://host.minikube.internal:11434
+            - --embed-model
+            - nomic-embed-text
+            - --golden
+            - /app/eval/golden.jsonl
+            - --labels
+            - /app/eval/human_inputs/answer_labels.yaml
+            - --traces
+            - /traces
+            - --results-dir
+            - /results
+            - --seed
+            - "4032"
+          resources:
+            requests: {cpu: 100m, memory: 128Mi}
+            limits: {cpu: "1", memory: 512Mi}
+          volumeMounts:
+            - {name: results, mountPath: /results}
+            - {name: traces, mountPath: /traces, readOnly: true}
+      volumes:
+        - {name: results, persistentVolumeClaim: {claimName: eval-results}}
+        - {name: traces, persistentVolumeClaim: {claimName: traces}}
+
