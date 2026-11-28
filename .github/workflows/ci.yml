@@ -76,7 +76,8 @@ jobs:
       - uses: actions/download-artifact@v4
         with: {name: ci-images, path: /tmp}
       - run: |
-          pip install httpx==0.28.1 PyYAML==6.0.2
+          python -m pip install --disable-pip-version-check --prefer-binary \
+            --timeout 120 --retries 10 httpx==0.28.1 PyYAML==6.0.2
           docker load -i /tmp/images.tar.gz
           kind load docker-image --name rahbar rahbar-api:dev rahbar-ui:dev rahbar-indexer:dev
           INDEX_TIMEOUT=3m EVAL_RUNNER=eval/run_eval.py PLATFORM_EVIDENCE_DIR=/tmp/rahbar-platform-evidence bash scripts/ci-stack.sh
